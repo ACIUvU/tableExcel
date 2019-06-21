@@ -26,6 +26,7 @@ SpinBox {
 
     valueFromText: function(text, locale) {
         return Number.fromLocaleString(locale, text)
+
     }
     editable: true
     contentItem: TextInput {

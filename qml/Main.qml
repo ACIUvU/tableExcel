@@ -428,7 +428,7 @@ App {
                     anchors.leftMargin: 10
                     anchors.top: parent.top
                     anchors.topMargin: 10
-                    width: 360
+                    width: 300
                     height: 35
                     currentIndex: 0
                     TabButton {
@@ -596,19 +596,19 @@ App {
                     property alias currentIndex : columnTabBar.currentIndex
                     onCurrentIndexChanged: {
                         if (currentIndex === 0) {
-                            commandsTable.visible = false;
-                            specialSignalsTable.visible = false;
-                            signalsTable.visible = true;
-                            connectToSignals();
+                            thismonthTable.visible = false;
+                            thisweekTable.visible = false;
+                            thisdayTable.visible = true;
+                            connectToThisday();
                         } else if (currentIndex === 1) {
-                            commandsTable.visible = false;
-                            specialSignalsTable.visible = true;
-                            signalsTable.visible = false;
-                            connectToSpecialSignals();
+                            thismonthTable.visible = false;
+                            thisweekTable.visible = true;
+                            thisdayTable.visible = false;
+                            connectToThisweek();
                         } else if (currentIndex === 2) {
-                            commandsTable.visible = true;
-                            specialSignalsTable.visible = false;
-                            signalsTable.visible = false;
+                            thismonthTable.visible = true;
+                            thisweekTable.visible = false;
+                            thisdayTable.visible = false;
                             connectToCommands();
                         }
                         updateSignalsName();
@@ -616,166 +616,166 @@ App {
                     }
 
                     Component.onCompleted: {
-                        commandsTable.visible = false;
-                        specialSignalsTable.visible = false;
-                        signalsTable.visible = true;
-                        connectToSignals();
+                        thismonthTable.visible = false;
+                        thisweekTable.visible = false;
+                        thisdayTable.visible = true;
+                        connectToThisday();
                     }
-                    function connectToSignals() {
-                        tabRect.addRowsAbove.disconnect(commandsTable.addRowsAbove)
-                        tabRect.addRowsBelow.disconnect(commandsTable.addRowsBelow)
-                        tabRect.addRowsTail.disconnect(commandsTable.addRowsTail)
-                        tabRect.removeRowsFromCurrent.disconnect(commandsTable.removeRowsFromCurrent)
-                        tabRect.clear.disconnect(commandsTable.clear)
-                        tabRect.updateDatas.disconnect(commandsTable.updateDatas)
-                        tabRect.check.disconnect(commandsTable.check)
-                        tabRect.find.disconnect(commandsTable.find)
-                        tabRect.redo.disconnect(commandsTable.redo)
-                        tabRect.undo.disconnect(commandsTable.undo)
-                        commandsTable.showInfo.disconnect(tabRect.showInfo)
+                    function connectToThisday() {
+                        tabRect.addRowsAbove.disconnect(thismonthTable.addRowsAbove)
+                        tabRect.addRowsBelow.disconnect(thismonthTable.addRowsBelow)
+                        tabRect.addRowsTail.disconnect(thismonthTable.addRowsTail)
+                        tabRect.removeRowsFromCurrent.disconnect(thismonthTable.removeRowsFromCurrent)
+                        tabRect.clear.disconnect(thismonthTable.clear)
+                        tabRect.updateDatas.disconnect(thismonthTable.updateDatas)
+                        tabRect.check.disconnect(thismonthTable.check)
+                        tabRect.find.disconnect(thismonthTable.find)
+                        tabRect.redo.disconnect(thismonthTable.redo)
+                        tabRect.undo.disconnect(thismonthTable.undo)
+                        thismonthTable.showInfo.disconnect(tabRect.showInfo)
 
-                        tabRect.addRowsAbove.disconnect(specialSignalsTable.addRowsAbove)
-                        tabRect.addRowsBelow.disconnect(specialSignalsTable.addRowsBelow)
-                        tabRect.addRowsTail.disconnect(specialSignalsTable.addRowsTail)
-                        tabRect.removeRowsFromCurrent.disconnect(specialSignalsTable.removeRowsFromCurrent)
-                        tabRect.clear.disconnect(specialSignalsTable.clear)
-                        tabRect.updateDatas.disconnect(specialSignalsTable.updateDatas)
-                        tabRect.check.disconnect(specialSignalsTable.check)
-                        tabRect.find.disconnect(specialSignalsTable.find)
-                        tabRect.redo.disconnect(specialSignalsTable.redo)
-                        tabRect.undo.disconnect(specialSignalsTable.undo)
-                        specialSignalsTable.showInfo.disconnect(tabRect.showInfo)
+                        tabRect.addRowsAbove.disconnect(thisweekTable.addRowsAbove)
+                        tabRect.addRowsBelow.disconnect(thisweekTable.addRowsBelow)
+                        tabRect.addRowsTail.disconnect(thisweekTable.addRowsTail)
+                        tabRect.removeRowsFromCurrent.disconnect(thisweekTable.removeRowsFromCurrent)
+                        tabRect.clear.disconnect(thisweekTable.clear)
+                        tabRect.updateDatas.disconnect(thisweekTable.updateDatas)
+                        tabRect.check.disconnect(thisweekTable.check)
+                        tabRect.find.disconnect(thisweekTable.find)
+                        tabRect.redo.disconnect(thisweekTable.redo)
+                        tabRect.undo.disconnect(thisweekTable.undo)
+                        thisweekTable.showInfo.disconnect(tabRect.showInfo)
 
-                        tabRect.addRowsAbove.connect(signalsTable.addRowsAbove)
-                        tabRect.addRowsBelow.connect(signalsTable.addRowsBelow)
-                        tabRect.addRowsTail.connect(signalsTable.addRowsTail)
-                        tabRect.removeRowsFromCurrent.connect(signalsTable.removeRowsFromCurrent)
-                        tabRect.clear.connect(signalsTable.clear)
-                        tabRect.updateDatas.connect(signalsTable.updateDatas)
-                        tabRect.check.connect(signalsTable.check)
-                        tabRect.find.connect(signalsTable.find)
-                        tabRect.redo.connect(signalsTable.redo)
-                        tabRect.undo.connect(signalsTable.undo)
-                        signalsTable.showInfo.connect(tabRect.showInfo)
+                        tabRect.addRowsAbove.connect(thisdayTable.addRowsAbove)
+                        tabRect.addRowsBelow.connect(thisdayTable.addRowsBelow)
+                        tabRect.addRowsTail.connect(thisdayTable.addRowsTail)
+                        tabRect.removeRowsFromCurrent.connect(thisdayTable.removeRowsFromCurrent)
+                        tabRect.clear.connect(thisdayTable.clear)
+                        tabRect.updateDatas.connect(thisdayTable.updateDatas)
+                        tabRect.check.connect(thisdayTable.check)
+                        tabRect.find.connect(thisdayTable.find)
+                        tabRect.redo.connect(thisdayTable.redo)
+                        tabRect.undo.connect(thisdayTable.undo)
+                        thisdayTable.showInfo.connect(tabRect.showInfo)
 
-                        findButton.buttonOneClickFuc = signalsTable.findLast
-                        findButton.buttonTwoClickFuc = signalsTable.findNext
+                        findButton.buttonOneClickFuc = thisdayTable.findLast
+                        findButton.buttonTwoClickFuc = thisdayTable.findNext
                         findButton.current = Qt.binding(function() {
-                            return signalsTable.currentFindIndex + 1;
+                            return thisdayTable.currentFindIndex + 1;
                         })
                         findButton.count = Qt.binding(function() {
-                            return signalsTable.findResult.length;
+                            return thisdayTable.findResult.length;
                         })
                         undoButton.count = Qt.binding(function() {
-                            return signalsTable.undoCount;
+                            return thisdayTable.undoCount;
                         })
                         redoButton.count = Qt.binding(function() {
-                            return signalsTable.redoCount;
+                            return thisdayTable.redoCount;
                         })
                     }
-                    function connectToSpecialSignals() {
-                        tabRect.addRowsAbove.disconnect(signalsTable.addRowsAbove)
-                        tabRect.addRowsBelow.disconnect(signalsTable.addRowsBelow)
-                        tabRect.addRowsTail.disconnect(signalsTable.addRowsTail)
-                        tabRect.removeRowsFromCurrent.disconnect(signalsTable.removeRowsFromCurrent)
-                        tabRect.clear.disconnect(signalsTable.clear)
-                        tabRect.updateDatas.disconnect(signalsTable.updateDatas)
-                        tabRect.check.disconnect(signalsTable.check)
-                        tabRect.find.disconnect(signalsTable.find)
-                        tabRect.redo.disconnect(signalsTable.redo)
-                        tabRect.undo.disconnect(signalsTable.undo)
-                        signalsTable.showInfo.disconnect(tabRect.showInfo)
+                    function connectToThisweek() {
+                        tabRect.addRowsAbove.disconnect(thisdayTable.addRowsAbove)
+                        tabRect.addRowsBelow.disconnect(thisdayTable.addRowsBelow)
+                        tabRect.addRowsTail.disconnect(thisdayTable.addRowsTail)
+                        tabRect.removeRowsFromCurrent.disconnect(thisdayTable.removeRowsFromCurrent)
+                        tabRect.clear.disconnect(thisdayTable.clear)
+                        tabRect.updateDatas.disconnect(thisdayTable.updateDatas)
+                        tabRect.check.disconnect(thisdayTable.check)
+                        tabRect.find.disconnect(thisdayTable.find)
+                        tabRect.redo.disconnect(thisdayTable.redo)
+                        tabRect.undo.disconnect(thisdayTable.undo)
+                        thisdayTable.showInfo.disconnect(tabRect.showInfo)
 
-                        tabRect.addRowsAbove.disconnect(commandsTable.addRowsAbove)
-                        tabRect.addRowsBelow.disconnect(commandsTable.addRowsBelow)
-                        tabRect.addRowsTail.disconnect(commandsTable.addRowsTail)
-                        tabRect.removeRowsFromCurrent.disconnect(commandsTable.removeRowsFromCurrent)
-                        tabRect.clear.disconnect(commandsTable.clear)
-                        tabRect.updateDatas.disconnect(commandsTable.updateDatas)
-                        tabRect.check.disconnect(commandsTable.check)
-                        tabRect.find.disconnect(commandsTable.find)
-                        tabRect.redo.disconnect(commandsTable.redo)
-                        tabRect.undo.disconnect(commandsTable.undo)
-                        commandsTable.showInfo.disconnect(tabRect.showInfo)
+                        tabRect.addRowsAbove.disconnect(thismonthTable.addRowsAbove)
+                        tabRect.addRowsBelow.disconnect(thismonthTable.addRowsBelow)
+                        tabRect.addRowsTail.disconnect(thismonthTable.addRowsTail)
+                        tabRect.removeRowsFromCurrent.disconnect(thismonthTable.removeRowsFromCurrent)
+                        tabRect.clear.disconnect(thismonthTable.clear)
+                        tabRect.updateDatas.disconnect(thismonthTable.updateDatas)
+                        tabRect.check.disconnect(thismonthTable.check)
+                        tabRect.find.disconnect(thismonthTable.find)
+                        tabRect.redo.disconnect(thismonthTable.redo)
+                        tabRect.undo.disconnect(thismonthTable.undo)
+                        thismonthTable.showInfo.disconnect(tabRect.showInfo)
 
-                        tabRect.addRowsAbove.connect(specialSignalsTable.addRowsAbove)
-                        tabRect.addRowsBelow.connect(specialSignalsTable.addRowsBelow)
-                        tabRect.addRowsTail.connect(specialSignalsTable.addRowsTail)
-                        tabRect.removeRowsFromCurrent.connect(specialSignalsTable.removeRowsFromCurrent)
-                        tabRect.clear.connect(specialSignalsTable.clear)
-                        tabRect.updateDatas.connect(specialSignalsTable.updateDatas)
-                        tabRect.check.connect(specialSignalsTable.check)
-                        tabRect.find.connect(specialSignalsTable.find)
-                        tabRect.redo.connect(specialSignalsTable.redo)
-                        tabRect.undo.connect(specialSignalsTable.undo)
-                        specialSignalsTable.showInfo.connect(tabRect.showInfo)
+                        tabRect.addRowsAbove.connect(thisweekTable.addRowsAbove)
+                        tabRect.addRowsBelow.connect(thisweekTable.addRowsBelow)
+                        tabRect.addRowsTail.connect(thisweekTable.addRowsTail)
+                        tabRect.removeRowsFromCurrent.connect(thisweekTable.removeRowsFromCurrent)
+                        tabRect.clear.connect(thisweekTable.clear)
+                        tabRect.updateDatas.connect(thisweekTable.updateDatas)
+                        tabRect.check.connect(thisweekTable.check)
+                        tabRect.find.connect(thisweekTable.find)
+                        tabRect.redo.connect(thisweekTable.redo)
+                        tabRect.undo.connect(thisweekTable.undo)
+                        thisweekTable.showInfo.connect(tabRect.showInfo)
 
-                        findButton.buttonOneClickFuc = specialSignalsTable.findLast
-                        findButton.buttonTwoClickFuc = specialSignalsTable.findNext
+                        findButton.buttonOneClickFuc = thisweekTable.findLast
+                        findButton.buttonTwoClickFuc = thisweekTable.findNext
                         findButton.current = Qt.binding(function() {
-                            return specialSignalsTable.currentFindIndex + 1;
+                            return thisweekTable.currentFindIndex + 1;
                         })
                         findButton.count = Qt.binding(function() {
-                            return specialSignalsTable.findResult.length;
+                            return thisweekTable.findResult.length;
                         })
                         undoButton.count = Qt.binding(function() {
-                            return specialSignalsTable.undoCount;
+                            return thisweekTable.undoCount;
                         })
                         redoButton.count = Qt.binding(function() {
-                            return specialSignalsTable.redoCount;
+                            return thisweekTable.redoCount;
                         })
                     }
 
                     function connectToCommands() {
-                        tabRect.addRowsAbove.disconnect(signalsTable.addRowsAbove)
-                        tabRect.addRowsBelow.disconnect(signalsTable.addRowsBelow)
-                        tabRect.addRowsTail.disconnect(signalsTable.addRowsTail)
-                        tabRect.removeRowsFromCurrent.disconnect(signalsTable.removeRowsFromCurrent)
-                        tabRect.clear.disconnect(signalsTable.clear)
-                        tabRect.updateDatas.disconnect(signalsTable.updateDatas)
-                        tabRect.check.disconnect(signalsTable.check)
-                        tabRect.find.disconnect(signalsTable.find)
-                        tabRect.redo.disconnect(signalsTable.redo)
-                        tabRect.undo.disconnect(signalsTable.undo)
-                        signalsTable.showInfo.disconnect(tabRect.showInfo)
+                        tabRect.addRowsAbove.disconnect(thisdayTable.addRowsAbove)
+                        tabRect.addRowsBelow.disconnect(thisdayTable.addRowsBelow)
+                        tabRect.addRowsTail.disconnect(thisdayTable.addRowsTail)
+                        tabRect.removeRowsFromCurrent.disconnect(thisdayTable.removeRowsFromCurrent)
+                        tabRect.clear.disconnect(thisdayTable.clear)
+                        tabRect.updateDatas.disconnect(thisdayTable.updateDatas)
+                        tabRect.check.disconnect(thisdayTable.check)
+                        tabRect.find.disconnect(thisdayTable.find)
+                        tabRect.redo.disconnect(thisdayTable.redo)
+                        tabRect.undo.disconnect(thisdayTable.undo)
+                        thisdayTable.showInfo.disconnect(tabRect.showInfo)
 
-                        tabRect.addRowsAbove.disconnect(specialSignalsTable.addRowsAbove)
-                        tabRect.addRowsBelow.disconnect(specialSignalsTable.addRowsBelow)
-                        tabRect.addRowsTail.disconnect(specialSignalsTable.addRowsTail)
-                        tabRect.removeRowsFromCurrent.disconnect(specialSignalsTable.removeRowsFromCurrent)
-                        tabRect.clear.disconnect(specialSignalsTable.clear)
-                        tabRect.updateDatas.disconnect(specialSignalsTable.updateDatas)
-                        tabRect.check.disconnect(specialSignalsTable.check)
-                        tabRect.find.disconnect(specialSignalsTable.find)
-                        tabRect.redo.disconnect(specialSignalsTable.redo)
-                        tabRect.undo.disconnect(specialSignalsTable.undo)
-                        specialSignalsTable.showInfo.disconnect(tabRect.showInfo)
+                        tabRect.addRowsAbove.disconnect(thisweekTable.addRowsAbove)
+                        tabRect.addRowsBelow.disconnect(thisweekTable.addRowsBelow)
+                        tabRect.addRowsTail.disconnect(thisweekTable.addRowsTail)
+                        tabRect.removeRowsFromCurrent.disconnect(thisweekTable.removeRowsFromCurrent)
+                        tabRect.clear.disconnect(thisweekTable.clear)
+                        tabRect.updateDatas.disconnect(thisweekTable.updateDatas)
+                        tabRect.check.disconnect(thisweekTable.check)
+                        tabRect.find.disconnect(thisweekTable.find)
+                        tabRect.redo.disconnect(thisweekTable.redo)
+                        tabRect.undo.disconnect(thisweekTable.undo)
+                        thisweekTable.showInfo.disconnect(tabRect.showInfo)
 
-                        tabRect.addRowsAbove.connect(commandsTable.addRowsAbove)
-                        tabRect.addRowsBelow.connect(commandsTable.addRowsBelow)
-                        tabRect.addRowsTail.connect(commandsTable.addRowsTail)
-                        tabRect.removeRowsFromCurrent.connect(commandsTable.removeRowsFromCurrent)
-                        tabRect.clear.connect(commandsTable.clear)
-                        tabRect.updateDatas.connect(commandsTable.updateDatas)
-                        tabRect.check.connect(commandsTable.check)
-                        tabRect.find.connect(commandsTable.find)
-                        tabRect.redo.connect(commandsTable.redo)
-                        tabRect.undo.connect(commandsTable.undo)
-                        commandsTable.showInfo.connect(tabRect.showInfo)
+                        tabRect.addRowsAbove.connect(thismonthTable.addRowsAbove)
+                        tabRect.addRowsBelow.connect(thismonthTable.addRowsBelow)
+                        tabRect.addRowsTail.connect(thismonthTable.addRowsTail)
+                        tabRect.removeRowsFromCurrent.connect(thismonthTable.removeRowsFromCurrent)
+                        tabRect.clear.connect(thismonthTable.clear)
+                        tabRect.updateDatas.connect(thismonthTable.updateDatas)
+                        tabRect.check.connect(thismonthTable.check)
+                        tabRect.find.connect(thismonthTable.find)
+                        tabRect.redo.connect(thismonthTable.redo)
+                        tabRect.undo.connect(thismonthTable.undo)
+                        thismonthTable.showInfo.connect(tabRect.showInfo)
 
-                        findButton.buttonOneClickFuc = commandsTable.findLast
-                        findButton.buttonTwoClickFuc = commandsTable.findNext
+                        findButton.buttonOneClickFuc = thismonthTable.findLast
+                        findButton.buttonTwoClickFuc = thismonthTable.findNext
                         findButton.current = Qt.binding(function() {
-                            return commandsTable.currentFindIndex + 1;
+                            return thismonthTable.currentFindIndex + 1;
                         })
                         findButton.count = Qt.binding(function() {
-                            return commandsTable.findResult.length;
+                            return thismonthTable.findResult.length;
                         })
                         undoButton.count = Qt.binding(function() {
-                            return commandsTable.undoCount;
+                            return thismonthTable.undoCount;
                         })
                         redoButton.count = Qt.binding(function() {
-                            return commandsTable.redoCount;
+                            return thismonthTable.redoCount;
                         })
                     }
                     function showInfo(info) {
@@ -783,19 +783,19 @@ App {
                     }
 
                     function checkData() {
-                        var err1 =  signalsTable.checkWithoutShowInfo();
+                        var err1 =  thisdayTable.checkWithoutShowInfo();
                         if (err1) {
-                            return "表格一 " + err1;
+                            return "今日安排 " + err1;
                         }
 
-                        var err2 = specialSignalsTable.checkWithoutShowInfo();
+                        var err2 = thisweekTable.checkWithoutShowInfo();
                         if (err2) {
-                            return "表格二 " + err2;
+                            return "本周事程 " + err2;
                         }
 
-                        var err3 = commandsTable.checkWithoutShowInfo();
+                        var err3 = thismonthTable.checkWithoutShowInfo();
                         if (err3) {
-                            return "表格三 " + err3
+                            return "当月目标" + err3
                         }
                         /*
                         if (jsonListModel.mcuVersion === "" || jsonListModel.mcuVersion === "0") {
@@ -806,16 +806,16 @@ App {
                     }
 
                     function clearReocrder() {
-                        signalsTable.clearRecorder();
-                        specialSignalsTable.clearRecorder();
-                        commandsTable.clearRecorder();
+                        thisdayTable.clearRecorder();
+                        thisweekTable.clearRecorder();
+                        thismonthTable.clearRecorder();
                     }
                     property variant signalNames;
                     function updateSignalsName() {
                         var array = [];
                         //手动放入一个空字符串
                         array.push("")
-                        var model = jsonListModel.signalsModel;
+                        var model = jsonListModel.thisday;
                         for (var i = 0; i < model.count; ++i) {
                             var obj = model.get(i);
                             if (obj.name) {
@@ -828,17 +828,17 @@ App {
                     //今日安排
                     readonly property var signalsHeaderModel: [
                         //"name", "bits", "coefficient", "offset", "min", "max", "invalid", "description"
-                        "事程", "开始时间", "持续时间", "description"
+                        "事件", "优先级","标签","description"
                     ]
                     //本周事程
                     readonly property var specialSignalHeaderModel: [
                         //"type", "name", "description"
-                        "事件", "开始日期", "结束日期","description"
+                        "事件","优先级", "日期","description"
                     ]
                     //当月目标
                     readonly property var commandsHeaderModel: [
                         //"name","bits","default","min", "max", "description"
-                        "目标","开始日期","截止日期t","description","总结"
+                        "事件","优先级","日期","结束日期","description"
                     ]
                     //固定名称
                     readonly property var fixedNames : [
@@ -875,11 +875,16 @@ App {
                     //data数据
                     MJsonListModel {
                         id: jsonListModel
-                        heartBeatIntervalQuery: "$.heartBeatInterval"
-                        mcuVersionQuery: "$.version"
-                        signalsQuery: "$.signals[*]"
-                        specialSignalsQuery: "$.specialSignals[*]"
-                        commandsQuery: "$.commands[*]"
+                        //heartBeatIntervalQuery: "$.heartBeatInterval"
+                        //mcuVersionQuery: "$.version"
+                        /*
+                        thisdayQuery: "$.signals[*]"
+                        thisweekQuery: "$.specialSignals[*]"
+                        thismonthQuery: "$.commands[*]"
+                        */
+                        thisdayQuery: "$.today[*]"
+                        thisweekQuery: "$.week[*]"
+                        thismonthQuery: "$.month[*]"
 
                         property string source: root.sourceFileName
                         onSourceChanged: {
@@ -917,12 +922,12 @@ App {
                     }
 
                     MTable {
-                        id: signalsTable
+                        id: thisdayTable
                         visible: false
-                        dataModel: jsonListModel.signalsModel
+                        dataModel: jsonListModel.thisday
                         headerModel: tabRect.signalsHeaderModel
                         fixedNames: tabRect.fixedNames
-                        tableType: "signals"
+                        tableType: "today"
                         onDataEdited: {
                             tableStatus.hasSaved = false;
                             //将数据string给出到TableStatus
@@ -930,12 +935,12 @@ App {
                         }
                     }
                     MTable {
-                        id: specialSignalsTable
+                        id: thisweekTable
                         visible: false
-                        dataModel: jsonListModel.specialSignalsModel
+                        dataModel: jsonListModel.thisweek
                         headerModel: tabRect.specialSignalHeaderModel
                         fixedNames: [""]
-                        tableType: "specialSignals"
+                        tableType: "week"
                         onDataEdited: {
                             tableStatus.hasSaved = false;
                             //将数据string给出到TableStatus
@@ -943,12 +948,12 @@ App {
                         }
                     }
                     MTable {
-                        id: commandsTable
+                        id: thismonthTable
                         visible: false
-                        dataModel: jsonListModel.commandsModel
+                        dataModel: jsonListModel.thismonth
                         headerModel: tabRect.commandsHeaderModel
                         fixedNames: ["applicationState"]
-                        tableType: "commands"
+                        tableType: "month"
                         signalNames: tabRect.signalNames
                         onDataEdited: {
                             tableStatus.hasSaved = false;
@@ -970,26 +975,26 @@ App {
                             Repeater {
                                 model: ListModel {
                                     ListElement {
-                                        name: "学习日";
+                                        name: "正常工作日";
                                         backIcon: "qrc:/Image/Template/simpleTemplateIconG.png";
                                         frontIcon: "qrc:/Image/Template/simpleTemplateIcon.png";
                                         path:":/Json/sample.json"
                                     }
                                     ListElement {
-                                        name: "菜谱";
+                                        name: "项目过程";
                                         backIcon: "qrc:/Image/Template/fuelCarG.png";
                                         frontIcon: "qrc:/Image/Template/fuelCar.png";
                                         path:":/Json/fuelCar.json"
                                     }
                                     ListElement {
-                                        name: "工作日";
+                                        name: "考试月";
                                         backIcon: "qrc:/Image/Template/electrombileG.png";
                                         frontIcon: "qrc:/Image/Template/electrombile.png";
                                         path:":/Json/electricCar.json"
                                     }
 
                                     ListElement {
-                                        name: "出游日";
+                                        name: "假期";
                                         backIcon: "qrc:/Image/Template/hybridG.png";
                                         frontIcon: "qrc:/Image/Template/hybrid.png";
                                         path:":/Json/mixingCar.json"
@@ -1101,9 +1106,9 @@ App {
                     }
                 }
                 function projectClose() {
-                    signalsTable.clear();
-                    specialSignalsTable.clear();
-                    commandsTable.clear();
+                    thisdayTable.clear();
+                    thisweekTable.clear();
+                    thismonthTable.clear();
                     root.sourceFileName = "";
                     tableStatus.hasSaved = true;
                     //heartBeatIntervalText.isInited = false

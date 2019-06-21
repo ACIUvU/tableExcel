@@ -44,11 +44,12 @@ Item {
 
     //表格的数据
     property ListModel dataModel;
-    //用来标识是状态帧还是下行帧: "signals" / "commands" / "specialSignals"
+    //用来标识是状态帧还是下行帧: "today" / "month" / "week"
+    //用来标识是今日还是本周或者当月: "today" / "month" / "week"
     property string tableType: ""
 
     //下行帧需要用到状态帧的name
-    property var signalNames: [""]
+    property var signalNames: ["个人","学校","公司","团队","购物","娱乐"]
     // 固定名称
     property var fixedNames : [""]
     property int undoCount: recorder.undoCount
@@ -96,7 +97,7 @@ Item {
         var err1 = tableView.checkBitLength();
         var err2 = ""
 
-        if (root.tableType === "specialSignals") {
+        if (root.tableType === "week") {
             err2 = tableView.checkSpecialSignals();
         } else {
             err2 = tableView.checkNames();
@@ -107,16 +108,19 @@ Item {
         if (err2) err += err2;
         if (err) showInfo(err);
     }
+
     function checkWithoutShowInfo() {
-        var err1 = tableView.checkBitLength();
+        //var err1 = tableView.checkBitLength();
         var err2 = "";
-        if (root.tableType === "specialSignals") {
+        if (root.tableType === "week") {
             err2 = tableView.checkSpecialSignals();
         } else {
             err2 = tableView.checkNames();
         }
-        return err1 + err2;
+        //return err1 + err2;
+        return err2;
     }
+
     function redo() {
         var str = recorder.redo();
         if (!str) return;
@@ -243,6 +247,7 @@ Item {
 //            anchors.bottomMargin: 1
             visible: status === Loader.Ready
             //根据role加载相应的组件
+            /*
             sourceComponent: {
                 var role = styleData.role;
                 if (role === "order")
@@ -272,6 +277,39 @@ Item {
                     return typeComponent;
                 else return emptyComponent;
             }
+            */
+            sourceComponent: {
+                var role = styleData.role;
+
+                if (role === "order")
+                    return orderComponent;
+
+                if (role === "事件")
+                    return nameComponent;
+                //
+                //else if(role === "self")
+                //    return myself;
+                else if (role === "优先级")
+                    return bitsComponent;
+                //else if (role === "coefficient")
+                //    return coeffComponent;
+                //else if (role === "offset")
+                //    return offsetComponent;
+                //else if (role === "invalid")
+                //    return invalidComponent;
+                else if (role === "description")
+                    return descriptionComponent;
+                //标签
+                else if (role === "标签" || role === "maintain")
+                    return defaultComponent;
+                else if (role === "日期")
+                    return minComponent;
+                else if (role === "结束日期")
+                    return maxComponent;
+                //else if (role === "type")
+                //    return typeComponent;
+                else return emptyComponent;
+            }
 
             //Note: 各种component需要写在loader内部。因为要访问styleData，在外部会
             //提示找不到styleData
@@ -279,6 +317,7 @@ Item {
                 id: emptyComponent
                 Item { }
             }
+
             Component {
                 id: orderComponent
                 Rectangle {
@@ -319,6 +358,8 @@ Item {
                 }
             }
             //
+
+            /*
             Component {
                 id: myself
                 Rectangle {
@@ -333,7 +374,7 @@ Item {
                         }
                     }
                 }
-
+            */
 
             Component {
                 id: nameComponent
@@ -488,6 +529,8 @@ Item {
                     }
                 }
             }
+
+            /*
             Component {
                 id: coeffComponent
                 Rectangle {
@@ -561,6 +604,9 @@ Item {
                     }
                 }
             }
+
+
+
             Component {
                 id: offsetComponent
                 Rectangle {
@@ -665,6 +711,7 @@ Item {
                         property bool isUserClicked: false
                         validator:RegExpValidator {
                             regExp: /(0[xX])([0-9a-fA-F]+)(,(0[xX])([0-9a-fA-F]+))*/
+                        /*
                         }
 
                         onDisplayTextChanged: {
@@ -761,6 +808,7 @@ Item {
                         //只能输入数字
                         validator:RegExpValidator {
                             regExp: /[0-9]*/
+                        /*
                         }
                         //  编辑完成时，将displayText写入model
                         onDisplayTextChanged: {
@@ -807,6 +855,8 @@ Item {
                     }
                 }
             }
+            */
+
             Component {
                 id: minComponent
                 Rectangle {
@@ -1282,10 +1332,10 @@ Item {
             }
             updateDatas();
 
-            if (root.tableType !== "specialSignals") {
+            if (root.tableType !== "week") {
                 //添加一列 字节号, json文件中没有
                 var orderTab = columnComponent.createObject(tableView)
-                orderTab.title = qsTr("起始字节号")
+                orderTab.title = qsTr("序号")
                 orderTab.role = "order"
                 orderTab.width = 100
                 tableView.addColumn(orderTab)
@@ -1304,7 +1354,7 @@ Item {
             }
         }
         function updateDatas() {
-            if (root.tableType !== "specialSignals") {
+            if (root.tableType !== "week") {
                 var order = 1;
                 var bits = 0;
                 for (var i = 0; i < dataModel.count; ++i) {
@@ -1316,15 +1366,21 @@ Item {
                 }
             }
         }
-        readonly property var emptySignalRow : {"name": "", "bits": 1, "coefficient": 1, "offset": 0, "invalid": "", "description": ""}
-        readonly property var emptyCommandRow : {"name": "", "bits": 1, "default": 0, "description": ""}
-        readonly property var emptySpecialSignalRow : {"name": "", "type": 0,"self":""}
+        /*
+        readonly property var thisdayRow : {"name": "", "bits": 1, "coefficient": 1, "offset": 0, "invalid": "", "description": ""}
+        readonly property var thismweekRow : {"name": "", "bits": 1, "default": 0, "description": ""}
+        readonly property var thismonthRow : {"name": "", "type": 0,"self":""}
+        */
+        readonly property var thisdayRow : {"事件": "","优先级":"1","标签":0,"description": ""}
+        readonly property var thismweekRow : {"事件": "","优先级":"1", "日期": 1, "description": ""}
+        readonly property var thismonthRow : {"事件": "","优先级":"1", "日期": 1, "结束日期": 1, "description": ""}
+
         function addRowsAbove(count, needRecord) {
-            var item = emptyCommandRow;
-            if (root.tableType === "signals" )
-                item = emptySignalRow;
-            else if (root.tableType === "specialSignals")
-                item = emptySpecialSignalRow;
+            var item = thismweekRow;
+            if (root.tableType === "today" )
+                item = thisdayRow;
+            else if (root.tableType === "week")
+                item = thismonthRow;
             var index = tableView.currentRow;
             if (tableView.rowCount <= 0 || index < 0)
                 index = 0;
@@ -1350,11 +1406,11 @@ Item {
             updateDatas();
         }
         function addRowsBelow(count, needRecord) {
-            var item = emptyCommandRow;
-            if (root.tableType === "signals" )
-                item = emptySignalRow;
-            else if (root.tableType === "specialSignals")
-                item = emptySpecialSignalRow;
+            var item = thismweekRow;
+            if (root.tableType === "today" )
+                item = thisdayRow;
+            else if (root.tableType === "week")
+                item = thismonthRow;
             var index = tableView.currentRow + 1;
             if (tableView.rowCount <= 0 || index < 0)
                 index = 0;
@@ -1379,11 +1435,11 @@ Item {
             updateDatas();
         }
         function addRowsTail(count, needRecord) {
-            var item = emptyCommandRow;
-            if (root.tableType === "signals" )
-                item = emptySignalRow;
-            else if (root.tableType === "specialSignals")
-                item = emptySpecialSignalRow;
+            var item = thismweekRow;
+            if (root.tableType === "today" )
+                item = thisdayRow;
+            else if (root.tableType === "week")
+                item = thismonthRow;
             for (var i = 0; i < count; ++i) {
                 dataModel.append(item);
             }
@@ -1452,6 +1508,7 @@ Item {
             recordObj["dataNew"] = newData;
             recorder.record(JSON.stringify(recordObj));
         }
+
         function checkBits() {
             var bytes = 1;
             var bits = 0;
@@ -1460,13 +1517,13 @@ Item {
                 if (obj && obj["bits"]) {
                     var currentBits = obj["bits"];
                     if (!currentBits || currentBits <= 0) {
-                        var info = "非法字节提示:<br>  " + "name(" + obj["name"] + ") 起始字节号(" + bytes + ") <br><br>";
+                        var info = "非法字节提示:<br>  " + "thing(" + obj["thing"] + ") 序号(" + bytes + ") <br><br>";
                         return info;
                     }
                     var __bits = bits + currentBits
                     if (__bits > 8) {
                         if (__bits % 8 != 0) {
-                            var info = "跨字节提示:<br>  " + "name(" + obj["name"] + ") 起始字节号(" + bytes + ") <br><br>";
+                            var info = "跨字节提示:<br>  " + "thing(" + obj["thing"] + ") 序号(" + bytes + ") <br><br>";
                             return info;
                         }
                     }
@@ -1477,6 +1534,8 @@ Item {
             }
             return "";
         }
+
+
         function checkBitLength() {
             var info = "";
             var bits = 0;
@@ -1485,7 +1544,7 @@ Item {
                 if (obj && obj["bits"]) {
                     var currentBits = obj["bits"];
                     if (!currentBits || currentBits <= 0) {
-                        info = "非法字节提示:<br>  " + "name(" + obj["name"] + ") 起始字节号(" + bytes + ") <br><br>";
+                        info = "非法字节提示:<br>  " + "thing(" + obj["thing"] + ") 序号(" + bytes + ") <br><br>";
                         return info;
                     }
                     bits += currentBits;
@@ -1497,6 +1556,8 @@ Item {
             }
             return info;
         }
+
+
         function checkNames() {
             var info = "";
 
@@ -1504,26 +1565,26 @@ Item {
             var names = [];
             for (var i = 0; i < dataModel.count; ++i) {
                 var obj = dataModel.get(i);
-                if (obj && obj["name"]) {
-                    var name = obj["name"];
-                    if (names.indexOf(name) >= 0) {
-                        info += "名字冲突: " + name + "<br>";
+                if (obj && obj["thing"]) {
+                    var thing = obj["thing"];
+                    if (names.indexOf(thing) >= 0) {
+                        info += "名字冲突: " + thing + "<br>";
                         break;
                     } else {
-                        names.push(name);
+                        names.push(thing);
                     }
                 }
             }
 
             var array = root.fixedNames;
             //外部传进来的Array，在第二次check的时候，会莫名其妙变成空的，这里先用固定的Array
-            if (root.tableType === "signals") {
+            if (root.tableType === "today") {
                 array = [ "rpm", "igOn", "theme", "language", "dateTime",
                          "enterKey", "backKey", "nextKey", "prevKey", "speed",
                          "hwVersionMax", "hwVersionMid", "hwVersionMin",
                          "mcuVersionMax", "mcuVersionMid", "mcuVersionMin", "projectModeEnabled"
                         ];
-            } else if (root.tableType === "commands") {
+            } else if (root.tableType === "month") {
                 array = ["applicationState"];
             }
 
@@ -1531,8 +1592,8 @@ Item {
             if (array.length > 0) {
                 for (var i = 0; i < dataModel.count; ++i) {
                     var obj = dataModel.get(i);
-                    if (obj && obj["name"]) {
-                        var index = array.indexOf(obj["name"]);
+                    if (obj && obj["thing"]) {
+                        var index = array.indexOf(obj["thing"]);
                         if (index >= 0) {
                             array.splice(index, 1);
                         }
@@ -1552,6 +1613,8 @@ Item {
             }
             return info;
         }
+
+        /*
         function checkSpecialSignals() {
             var types = [];
             var names = [];
@@ -1582,6 +1645,7 @@ Item {
             }
             return ""
         }
+        */
         function find(text) {
             var result = []
             var key = text.toLowerCase();

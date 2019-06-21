@@ -10,29 +10,50 @@ Item {
     property string error: ""
 
     //默认1000
-    property int heartBeatInterval: 1000
-    property string mcuVersion: ""
+    //property int heartBeatInterval: 1000
+    //property string mcuVersion: ""
+    /*
     property ListModel signalsModel: ListModel {
         id: signalsListModel; dynamicRoles: true
     }
-    property ListModel specialSignalsModel: ListModel {
-        id: specialSignalsListModel; dynamicRoles: true
+    property ListModel specialthisday: ListModel {
+        id: specialsignalsListModel; dynamicRoles: true
     }
     property ListModel commandsModel: ListModel {
-        id: commandsListModel; dynamicRoles: true
+        id: commandsModelListModel; dynamicRoles: true
     }
-    property string heartBeatIntervalQuery: ""
-    property string mcuVersionQuery: ""
+    */
+    property ListModel thisday: ListModel {
+        //动态角色
+
+        id: thisdayListModel; dynamicRoles: true
+    }
+    property ListModel thisweek: ListModel {
+        id: thisweekListModel; dynamicRoles: true
+    }
+    property ListModel thismonth: ListModel {
+        id: thismonthListModel; dynamicRoles: true
+    }
+    //property string heartBeatIntervalQuery: ""
+    //property string mcuVersionQuery: ""
+    /*
     property string signalsQuery: ""
     property string specialSignalsQuery: ""
     property string commandsQuery: ""
-
+    */
+    //查询
+    property string thisdayQuery: ""
+    property string thisweekQuery: ""
+    property string thismonthQuery: ""
+    /*
     readonly property var specialSignalsHeader: [
         "type", "name", "description"
     ]
+    */
 
     property string jsonStr: ""
 
+    /*
     onHeartBeatIntervalQueryChanged: {
         var retArray = queryFromJsonToArray(heartBeatIntervalQuery);
         var val = parseInt(retArray);
@@ -49,14 +70,31 @@ Item {
             mcuVersion = str;
         }
     }
+    */
+    /*
     onSignalsQueryChanged: {
-        queryToModel(signalsListModel, signalsQuery, null);
+        queryToModel(thisdayListModel, thisdayQuery, null);
     }
     onSpecialSignalsQueryChanged: {
-        queryToModel(specialSignalsListModel, specialSignalsQuery, specialSignalsHeader);
+        queryToModel(thisweekListModel, thisweekQuery, specialSignalsHeader);
     }
     onCommandsQueryChanged: {
-        queryToModel(commandsListModel, commandsQuery, null);
+        queryToModel(thismonthListModel, thismonthQuery, null);
+    }
+    */
+    onThisdayQueryChanged: {
+        queryToModel(thisdayListModel, thisdayQuery, null);
+    }
+    /*
+    onThisweekQueryChanged: {
+        queryToModel(thisweekListModel, thisweekQuery, specialSignalsHeader);
+    }
+    */
+    onThisweekQueryChanged: {
+        queryToModel(thisweekListModel, thisweekQuery, null);
+    }
+    onThismonthQueryChanged: {
+        queryToModel(thismonthListModel, thismonthQuery, null);
     }
 
     //加载源文件
@@ -65,6 +103,7 @@ Item {
         var ret = fileIO.readFile(source);
         if (ret === "") {
             error = fileIO.getErrorString();
+            //error = fileIO.errorString()
         } else {
             error = "";
             jsonStr = ret;
@@ -84,14 +123,14 @@ Item {
         }
     }
     function getModelData(isIndented) {
-        var signalsArray = getObjectsToArray(signalsModel);
-        var specialSingalsArray = getObjectsToArray(specialSignalsModel);
-        var commandsArray = getObjectsToArray(commandsModel);
+        var thisdayArray = getObjectsToArray(thisday);
+        var thisweekArray = getObjectsToArray(thisweek);
+        var thismonthArray = getObjectsToArray(thismonth);
 
         var obj = Object.create(null);
-        //filte default and maintain in commands
-        for (var i = 0; i < commandsArray.length; ++i) {
-            var commandObj = commandsArray[i];
+        //filte default and maintain in month
+        for (var i = 0; i < thismonthArray.length; ++i) {
+            var commandObj = thismonthArray[i];
             if (commandObj["maintain"] !== undefined) {
                 var newObj = new Object;
                 var filterName = "default";
@@ -106,14 +145,14 @@ Item {
                         newObj[key] = commandObj[key];
                     }
                 }
-                commandsArray[i] = newObj;
+                thismonthArray[i] = newObj;
             }
         }
-        obj.version = mcuVersion;
-        obj.heartBeatInterval = (heartBeatInterval === 0 ? 1000 : heartBeatInterval);
-        obj.signals =  signalsArray;
-        obj.specialSignals = specialSingalsArray;
-        obj.commands = commandsArray;
+        //obj.version = mcuVersion;
+        //obj.heartBeatInterval = (heartBeatInterval === 0 ? 1000 : heartBeatInterval);
+        obj.today =  thisdayArray;
+        obj.week = thisweekArray;
+        obj.month = thismonthArray;
         var str = "";
         if (isIndented) {
             str = JSON.stringify(obj, function (key, value) {
@@ -148,8 +187,9 @@ Item {
     }
     //update
     function updateDatas() {
-        var retArray = queryFromJsonToArray(heartBeatIntervalQuery);
-        var val = parseInt(retArray);
+        //var retArray = queryFromJsonToArray(heartBeatIntervalQuery);
+        //var val = parseInt(retArray);
+        /*
         if (val) {
             heartBeatInterval = val;
         } else {
@@ -161,10 +201,12 @@ Item {
             var str = retArray.toString();
             mcuVersion = str;
         }
+        */
 
-        queryToModel(signalsListModel, signalsQuery, null);
-        queryToModel(specialSignalsListModel, specialSignalsQuery, specialSignalsHeader);
-        queryToModel(commandsListModel, commandsQuery, null);
+        queryToModel(thisdayListModel, thisdayQuery, null);
+        //queryToModel(thisweekListModel, thisweekQuery, specialSignalsHeader);
+        queryToModel(thisweekListModel, thisweekQuery, null);
+        queryToModel(thismonthListModel, thismonthQuery, null);
     }
     //使用JsonPath查询数据, 不影响model
     function queryFromJsonToArray(query) {
