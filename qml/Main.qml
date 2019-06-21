@@ -45,7 +45,7 @@ App {
 
 
                 //左上角
-
+                /*
                 Row {
                     anchors.left: parent.left
                     anchors.leftMargin: 10
@@ -74,7 +74,7 @@ App {
                         //验证器
                         validator:RegExpValidator {
                             regExp: /[0-9a-zA-Z.]*/
-
+    /*
                         }
                         onDisplayTextChanged: {
                             jsonListModel.mcuVersion = text
@@ -125,7 +125,7 @@ App {
                         selectByMouse: true
                         validator:RegExpValidator {
                             regExp: /[0-9]*/
-
+/*
                         }
                         property bool isInited: false
                         onDisplayTextChanged: {
@@ -175,7 +175,7 @@ App {
                         color: "#272727"
                     }
                 }
-
+*/
 
                 //右下角
                 //FMHoverButton名字该改一改
@@ -228,7 +228,7 @@ App {
                             }
                         }
                     }
-
+/*
                     CheckBox {
                         id: indentCheckBox
                         anchors.verticalCenter: parent.verticalCenter
@@ -269,7 +269,7 @@ App {
                             verticalAlignment: Text.AlignVCenter
                         }
                     }
-
+*/
                     Item {
                         height: parent.height
                         width: 50
@@ -413,6 +413,7 @@ App {
                     }
                 }
 
+
                 //        文件读写
                 FileIO {
                     id: fileIO
@@ -426,7 +427,7 @@ App {
                     anchors.left: parent.left
                     anchors.leftMargin: 10
                     anchors.top: parent.top
-                    anchors.topMargin: 50
+                    anchors.topMargin: 10
                     width: 360
                     height: 35
                     currentIndex: 0
@@ -514,6 +515,7 @@ App {
                             root.showTemplateBox();
                         }
                     }
+                    /*
                     MHoverButton {
                         id: checkButton
                         tipText: qsTr("检查")
@@ -547,6 +549,7 @@ App {
                             root.showMessageBox(tips);
                         }
                     }
+                    */
                 }
                 Item {
                     id: tabRect
