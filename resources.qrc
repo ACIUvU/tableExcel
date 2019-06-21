@@ -1,5 +1,14 @@
 <RCC>
     <qresource prefix="/">
         <file>qml/Main.qml</file>
+        <file>qml/component/JsonPath.js</file>
+        <file>qml/component/MPopDialog.qml</file>
+        <file>qml/component/MSpinBox.qml</file>
+        <file>qml/component/MSpinButton.qml</file>
+        <file>qml/component/MTextButton.qml</file>
+        <file>qml/component/MToolTip.qml</file>
+        <file>qml/component/MColorButton.qml</file>
+        <file>qml/component/MHoverButton.qml</file>
+        <file>qml/component/MJsonListModel.qml</file>
     </qresource>
 </RCC>

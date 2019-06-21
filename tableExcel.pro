@@ -26,7 +26,9 @@ DEPLOYMENTFOLDERS += assetsFolder
 # Add more folders to ship with the application here
 
 RESOURCES += \ #    resources.qrc # uncomment for publishing
-    resources.qrc
+    resources.qrc \
+    image.qrc \
+    json.qrc
 
 # NOTE: for PUBLISHING, perform the following steps:
 # 1. comment the DEPLOYMENTFOLDERS += qmlFolder line above, to avoid shipping your qml files with the application (instead they get compiled to the app binary)
@@ -69,3 +71,9 @@ HEADERS += \
     fileio.h \
     operationrecorder.h \
     tablestatus.h
+
+DISTFILES += \
+    qml/component/MColorButton.qml \
+    qml/component/MHoverButton.qml \
+    qml/component/MJsonListModel.qml \
+    qml/MTable.qml

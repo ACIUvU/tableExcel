@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
     TableStatus tableStatus;
     QQuickView view;
     view.engine()->rootContext()->setContextProperty("TableStatus", &tableStatus);
-    view.setSource(QUrl("qrc:/Qml/Main.qml"));
+    view.setSource(QUrl("qrc:/qml/Main.qml"));
     view.show();
 
     engine.load(QUrl(felgo.mainQmlFileName()));
