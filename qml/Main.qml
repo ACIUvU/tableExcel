@@ -14,6 +14,8 @@ App {
         Page {
             title: qsTr("Main Page")
 
+
+
             Image {
                 source: "../assets/felgo-logo.png"
                 anchors.centerIn: parent

@@ -25,7 +25,8 @@ DEPLOYMENTFOLDERS += assetsFolder
 
 # Add more folders to ship with the application here
 
-RESOURCES += #    resources.qrc # uncomment for publishing
+RESOURCES += \ #    resources.qrc # uncomment for publishing
+    resources.qrc
 
 # NOTE: for PUBLISHING, perform the following steps:
 # 1. comment the DEPLOYMENTFOLDERS += qmlFolder line above, to avoid shipping your qml files with the application (instead they get compiled to the app binary)
@@ -38,7 +39,11 @@ RESOURCES += #    resources.qrc # uncomment for publishing
 
 
 # The .cpp file which was generated for your project. Feel free to hack it.
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    fileinfo.cpp \
+    fileio.cpp \
+    operationrecorder.cpp \
+    tablestatus.cpp
 
 
 android {
@@ -58,3 +63,9 @@ win32 {
 macx {
     ICON = macx/app_icon.icns
 }
+
+HEADERS += \
+    fileinfo.h \
+    fileio.h \
+    operationrecorder.h \
+    tablestatus.h

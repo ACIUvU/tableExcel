@@ -3,6 +3,14 @@
 
 #include <QQmlApplicationEngine>
 
+#include <QQuickView>
+#include <QQmlContext>
+
+#include "fileio.h"
+#include "fileinfo.h"
+#include "tablestatus.h"
+#include "operationrecorder.h"
+
 // uncomment this line to add the Live Client Module and use live reloading with your custom C++ code
 //#include <FelgoLiveClient>
 
@@ -31,6 +39,17 @@ int main(int argc, char *argv[])
     // to avoid deployment of your qml files and images, also comment the DEPLOYMENTFOLDERS command in the .pro file
     // also see the .pro file for more details
     // felgo.setMainQmlFileName(QStringLiteral("qrc:/qml/Main.qml"));
+
+    //qml联动C++
+    qmlRegisterType<FileIO>("Tools", 1, 0, "FileIO");
+    qmlRegisterType<FileInfo>("Tools", 1, 0, "FileInfo");
+    qmlRegisterType<OperationRecorder>("Tools", 1, 0, "OperationRecorder");
+
+    TableStatus tableStatus;
+    QQuickView view;
+    view.engine()->rootContext()->setContextProperty("TableStatus", &tableStatus);
+    view.setSource(QUrl("qrc:/Qml/Main.qml"));
+    view.show();
 
     engine.load(QUrl(felgo.mainQmlFileName()));
 
