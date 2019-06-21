@@ -46,13 +46,14 @@ int main(int argc, char *argv[])
     qmlRegisterType<FileIO>("Tools", 1, 0, "FileIO");
     qmlRegisterType<FileInfo>("Tools", 1, 0, "FileInfo");
     qmlRegisterType<OperationRecorder>("Tools", 1, 0, "OperationRecorder");
+    qmlRegisterType<TableStatus>("Tools", 1, 0, "TableStatus");
 
-    TableStatus tableStatus;
-    QQuickView view;
-    view.engine()->rootContext()->setContextProperty("TableStatus", &tableStatus);
-    view.setSource(QUrl("qrc:/qml/Main.qml"));
+    //TableStatus tableStatus;
+    //QQuickView view;
+    //view.engine()->rootContext()->setContextProperty("TableStatus", &tableStatus);
+    //view.setSource(QUrl("qrc:/qml/Main.qml"));
     //view.setSource(QUrlfelgo.mainQmlFileName());
-    view.show();
+    //view.show();
 
     engine.load(QUrl(felgo.mainQmlFileName()));
 

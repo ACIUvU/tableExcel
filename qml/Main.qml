@@ -27,9 +27,11 @@ App {
 
                 //放到最后去
                 //连接对象创建到QML信号的连接
+
+                /*
                 Connections {
-                    target:TableStatus
-                    //TableStatus.onSourceJsonFilePathChanged:
+                    target:tableStatus
+                    //tableStatus.onSourceJsonFilePathChanged:
 
                     onSourceJsonFilePathChanged: {
                         if (sourceJsonFilePath) {
@@ -39,10 +41,11 @@ App {
                         }
                     }
                 }
+                */
 
 
                 //左上角
-                /*
+
                 Row {
                     anchors.left: parent.left
                     anchors.leftMargin: 10
@@ -71,12 +74,12 @@ App {
                         //验证器
                         validator:RegExpValidator {
                             regExp: /[0-9a-zA-Z.]*/
-                        /*
+
                         }
                         onDisplayTextChanged: {
                             jsonListModel.mcuVersion = text
                             if (isInited)
-                                TableStatus.hasSaved = false;
+                                tableStatus.hasSaved = false;
                         }
                         property bool isInited: false
                         MouseArea {
@@ -122,7 +125,7 @@ App {
                         selectByMouse: true
                         validator:RegExpValidator {
                             regExp: /[0-9]*/
-/*
+
                         }
                         property bool isInited: false
                         onDisplayTextChanged: {
@@ -130,7 +133,7 @@ App {
                                 text = "1000"
                             jsonListModel.heartBeatInterval = parseInt(text)
                             if (isInited)
-                                TableStatus.hasSaved = false;
+                                tableStatus.hasSaved = false;
                         }
                         background: Rectangle {
                             implicitWidth: 100
@@ -172,7 +175,7 @@ App {
                         color: "#272727"
                     }
                 }
-            */
+
 
                 //右下角
                 //FMHoverButton名字该改一改
@@ -225,16 +228,16 @@ App {
                             }
                         }
                     }
-                    /*
+
                     CheckBox {
                         id: indentCheckBox
                         anchors.verticalCenter: parent.verticalCenter
                         text: qsTr("Indented格式")
 
                         onCheckStateChanged: {
-                            TableStatus.saveWithIndented = (indentCheckBox.checkState == Qt.Checked)
+                            tableStatus.saveWithIndented = (indentCheckBox.checkState == Qt.Checked)
                         }
-                        Component.onCompleted: checked = TableStatus.saveWithIndented
+                        Component.onCompleted: checked = tableStatus.saveWithIndented
                         indicator: Rectangle {
                             id: indicRect
                             implicitWidth: 22
@@ -266,7 +269,7 @@ App {
                             verticalAlignment: Text.AlignVCenter
                         }
                     }
-                    */
+
                     Item {
                         height: parent.height
                         width: 50
@@ -305,7 +308,7 @@ App {
                         buttonEnabled: count > 0
                         onClicked: {
                             tabRect.undo();
-                            TableStatus.hasSaved = false;
+                            tableStatus.hasSaved = false;
                         }
                         Rectangle {
                             anchors.right: parent.right
@@ -333,7 +336,7 @@ App {
 
                         onClicked: {
                             tabRect.redo();
-                            TableStatus.hasSaved = false;
+                            tableStatus.hasSaved = false;
                         }
                         Rectangle {
                             anchors.right: parent.right
@@ -356,7 +359,7 @@ App {
                     //            frontImageSource: "qrc:/Image/Table/insert-rowB.png"
                     //            onClicked: {
                     //                tabRect.addRowsAbove(1);
-                    //                TableStatus.hasSaved = false;
+                    //                tableStatus.hasSaved = false;
                     //            }
                     //        }
                     MHoverButton {
@@ -366,7 +369,7 @@ App {
                         frontImageSource: "qrc:/Image/Table/insert-belowB.png"
                         onClicked: {
                             tabRect.addRowsBelow(1);
-                            TableStatus.hasSaved = false;
+                            tableStatus.hasSaved = false;
                         }
                     }
                     MHoverButton {
@@ -376,7 +379,7 @@ App {
                         frontImageSource: "qrc:/Image/Table/append-rowB.png"
                         onClicked: {
                             tabRect.addRowsTail(1);
-                            TableStatus.hasSaved = false;
+                            tableStatus.hasSaved = false;
                         }
                     }
                     MHoverButton {
@@ -386,7 +389,7 @@ App {
                         frontImageSource: "qrc:/Image/Table/delete-rowB.png"
                         onClicked: {
                             tabRect.removeRowsFromCurrent();
-                            TableStatus.hasSaved = false;
+                            tableStatus.hasSaved = false;
                         }
                     }
                     MHoverButton {
@@ -564,6 +567,25 @@ App {
                     signal find(string text);
                     signal redo();
                     signal undo();
+
+                    TableStatus {
+                        id: tableStatus
+                    }
+
+                    /*
+                    Connections {
+                        target:tableStatus
+                        //tableStatus.onSourceJsonFilePathChanged:
+
+                        onSourceJsonFilePathChanged: {
+                            if (sourceJsonFilePath) {
+                                //先置空，再赋值，保证能多次加载同一个文件
+                                root.sourceFileName = ""
+                                root.sourceFileName = sourceJsonFilePath;
+                            }
+                        }
+                    }
+                    */
 
                     property alias currentIndex : columnTabBar.currentIndex
                     onCurrentIndexChanged: {
@@ -872,8 +894,8 @@ App {
                             //heartBeatIntervalText.isInited = true
                             //mcuVersionText.isInited = true
                             busyRect.close();
-                            TableStatus.hasLoadedModel = true;
-                            TableStatus.setMcuData(jsonListModel.getModelData(false));
+                            //tableStatus.hasLoadedModel = true;
+                            tableStatus.setMcuData(jsonListModel.getModelData(false));
                             tabRect.clearReocrder();
                             var err = tabRect.checkData();
                             if (err) {
@@ -890,9 +912,9 @@ App {
                         fixedNames: tabRect.fixedNames
                         tableType: "signals"
                         onDataEdited: {
-                            TableStatus.hasSaved = false;
+                            tableStatus.hasSaved = false;
                             //将数据string给出到TableStatus
-                            TableStatus.setMcuData(jsonListModel.getModelData(false));
+                            tableStatus.setMcuData(jsonListModel.getModelData(false));
                         }
                     }
                     MTable {
@@ -903,9 +925,9 @@ App {
                         fixedNames: [""]
                         tableType: "specialSignals"
                         onDataEdited: {
-                            TableStatus.hasSaved = false;
+                            tableStatus.hasSaved = false;
                             //将数据string给出到TableStatus
-                            TableStatus.setMcuData(jsonListModel.getModelData(false));
+                            tableStatus.setMcuData(jsonListModel.getModelData(false));
                         }
                     }
                     MTable {
@@ -917,9 +939,9 @@ App {
                         tableType: "commands"
                         signalNames: tabRect.signalNames
                         onDataEdited: {
-                            TableStatus.hasSaved = false;
+                            tableStatus.hasSaved = false;
                             //将数据string给出到TableStatus
-                            TableStatus.setMcuData(jsonListModel.getModelData(false));
+                            tableStatus.setMcuData(jsonListModel.getModelData(false));
                         }
                     }
                 }
@@ -969,7 +991,7 @@ App {
                                     frontImageSource: frontIcon
                                     tipText: name
                                     onClicked: {
-                                        var ret = TableStatus.loadTemplateFile(path)
+                                        var ret = tableStatus.loadTemplateFile(path)
                                         if (ret !== "") {
                                             console.log(ret)
                                         }
@@ -985,14 +1007,14 @@ App {
                     root.sourceFileName = ""
                     root.sourceFileName = filePath;
                     columnTabBar.currentIndex = 0;
-                    TableStatus.hasSaved = true;
+                    tableStatus.hasSaved = true;
                 }
                 function saveToJson(filePath, withReloadEvent) {
-                    var err = jsonListModel.saveModelsToFile(filePath, TableStatus.saveWithIndented)
+                    var err = jsonListModel.saveModelsToFile(filePath, tableStatus.saveWithIndented)
                     if (err !== "") {
                         root.showMessageBox(qsTr("Mcu保存出错： " + err));
                     } else {
-                        TableStatus.hasSaved = true;
+                        tableStatus.hasSaved = true;
                         root.sourceFileName = filePath;
                     }
                 }
@@ -1006,7 +1028,7 @@ App {
                     popDialog.height = 200;
                     popDialog.okClickFunc = function() {
                         tabRect.clear();
-                        TableStatus.hasSaved = false;
+                        tableStatus.hasSaved = false;
                         popDialog.close();
                     }
                 }
@@ -1020,7 +1042,7 @@ App {
                     popDialog.height = 400;
                     popDialog.okClickFunc = function() {
                         tabRect.clear();
-                        TableStatus.hasSaved = false;
+                        tableStatus.hasSaved = false;
                         popDialog.close();
                     }
 
@@ -1049,12 +1071,12 @@ App {
                     }
                 }
                 function projectSave() {
-                    if (TableStatus.sourceJsonFilePath) {
+                    if (tableStatus.sourceJsonFilePath) {
                         var err = tabRect.checkData();
                         if (err) {
                             root.showMessageBox(err)
                         } else {
-                            root.saveToJson(TableStatus.sourceJsonFilePath, false);
+                            root.saveToJson(tableStatus.sourceJsonFilePath, false);
                         }
                     }
                 }
@@ -1071,7 +1093,7 @@ App {
                     specialSignalsTable.clear();
                     commandsTable.clear();
                     root.sourceFileName = "";
-                    TableStatus.hasSaved = true;
+                    tableStatus.hasSaved = true;
                     //heartBeatIntervalText.isInited = false
                     //mcuVersionText.isInited = false
                 }
