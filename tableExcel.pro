@@ -4,7 +4,10 @@ CONFIG += felgo
 # uncomment this line to add the Live Client Module and use live reloading with your custom C++ code
 # for the remaining steps to build a custom Live Code Reload app see here: https://felgo.com/custom-code-reload-app/
 # CONFIG += felgo-live
-
+msvc{
+    QMAKE_CFLAGS += -source-charset:utf-8
+    QMAKE_CXXFLAGS += -source-charset:utf-8
+}
 # Project identifier and version
 # More information: https://felgo.com/doc/felgo-publishing/#project-configuration
 PRODUCT_IDENTIFIER = com.yourcompany.wizardEVAP.TableExcel

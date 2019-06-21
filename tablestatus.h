@@ -2,7 +2,7 @@
 #define TABLESTATUS_H
 
 
-#pragma once
+//#pragma once
 
 #include <QDir>
 #include <QObject>

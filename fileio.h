@@ -1,7 +1,7 @@
 #ifndef FILEIO_H
 #define FILEIO_H
 
-#pragma once
+//#pragma once
 
 #include <QUrl>
 #include <QFile>

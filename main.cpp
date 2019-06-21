@@ -3,8 +3,10 @@
 
 #include <QQmlApplicationEngine>
 
+#include <QQmlEngine>
 #include <QQuickView>
 #include <QQmlContext>
+#include <QGuiApplication>
 
 #include "fileio.h"
 #include "fileinfo.h"
@@ -49,6 +51,7 @@ int main(int argc, char *argv[])
     QQuickView view;
     view.engine()->rootContext()->setContextProperty("TableStatus", &tableStatus);
     view.setSource(QUrl("qrc:/qml/Main.qml"));
+    //view.setSource(QUrlfelgo.mainQmlFileName());
     view.show();
 
     engine.load(QUrl(felgo.mainQmlFileName()));

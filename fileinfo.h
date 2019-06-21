@@ -1,7 +1,7 @@
 #ifndef FILEINFO_H
 #define FILEINFO_H
 //只编译一次
-#pragma once
+//#pragma once
 
 #include <QUrl>
 #include <QDir>

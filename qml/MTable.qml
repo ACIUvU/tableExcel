@@ -6,7 +6,8 @@ import QtQuick.Dialogs 1.2
 import QtQml 2.2
 import Tools 1.0
 
-import "Component"
+//import "qrc:/qml/component/"
+import"component"
 
 Item {
     id: root

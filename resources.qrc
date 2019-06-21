@@ -10,5 +10,6 @@
         <file>qml/component/MColorButton.qml</file>
         <file>qml/component/MHoverButton.qml</file>
         <file>qml/component/MJsonListModel.qml</file>
+        <file>qml/MTable.qml</file>
     </qresource>
 </RCC>

@@ -1,7 +1,7 @@
 #ifndef OPERATIONRECORDER_H
 #define OPERATIONRECORDER_H
 
-#pragma once
+//#pragma once
 
 #include <QObject>
 #include <QString>

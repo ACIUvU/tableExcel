@@ -3,7 +3,8 @@ import QtQuick 2.7
 import QtQuick.Dialogs 1.2
 import QtQuick.Controls 2.0
 import Tools 1.0
-import "qrc:/qml/component/"
+import "qrc:/qml/component"
+
 App {
     // You get free licenseKeys from https://felgo.com/licenseKey
     // With a licenseKey you can:
@@ -14,17 +15,22 @@ App {
 
     NavigationStack {
 
-        Page {
+        FlickablePage {
             Item {
                 id: root
-                width: 1340
-                height: 780
+                //width: 1340
+                //height: 780
+                //anchors.fill:parent
+                width:parent.width
+                height: parent.height
                 property string sourceFileName: ""
 
                 //放到最后去
                 //连接对象创建到QML信号的连接
                 Connections {
-                    target: TableStatus
+                    target:TableStatus
+                    //TableStatus.onSourceJsonFilePathChanged:
+
                     onSourceJsonFilePathChanged: {
                         if (sourceJsonFilePath) {
                             //先置空，再赋值，保证能多次加载同一个文件
@@ -36,7 +42,7 @@ App {
 
 
                 //左上角
-
+                /*
                 Row {
                     anchors.left: parent.left
                     anchors.leftMargin: 10
@@ -65,7 +71,7 @@ App {
                         //验证器
                         validator:RegExpValidator {
                             regExp: /[0-9a-zA-Z.]*/
-
+                        /*
                         }
                         onDisplayTextChanged: {
                             jsonListModel.mcuVersion = text
@@ -116,7 +122,7 @@ App {
                         selectByMouse: true
                         validator:RegExpValidator {
                             regExp: /[0-9]*/
-
+/*
                         }
                         property bool isInited: false
                         onDisplayTextChanged: {
@@ -166,15 +172,16 @@ App {
                         color: "#272727"
                     }
                 }
-
+            */
 
                 //右下角
                 //FMHoverButton名字该改一改
                 Row {
+
                     anchors.left: parent.left
                     anchors.bottom: parent.bottom
                     anchors.margins: 5
-                    width: 1340
+                    width: parent.width
                     spacing: 10
                     MHoverButton {
                         tipText: qsTr("加载")
@@ -410,8 +417,9 @@ App {
                 FileInfo {
                     id: fileInfo
                 }
+
                 TabBar {
-                    id: mcuTabBar
+                    id: columnTabBar
                     anchors.left: parent.left
                     anchors.leftMargin: 10
                     anchors.top: parent.top
@@ -421,7 +429,7 @@ App {
                     currentIndex: 0
                     TabButton {
                         id: signalsButton
-                        text: qsTr("状态帧")
+                        text: qsTr("表格一")
                         contentItem: Text {
                             anchors.centerIn: signalsButton
                             text: signalsButton.text
@@ -437,7 +445,7 @@ App {
                     }
                     TabButton {
                         id: specialSignalsButton
-                        text: qsTr("事件帧")
+                        text: qsTr("表格二")
                         contentItem: Text {
                             anchors.centerIn: specialSignalsButton
                             text: specialSignalsButton.text
@@ -453,7 +461,7 @@ App {
                     }
                     TabButton {
                         id: commandsButton
-                        text: qsTr("下行帧")
+                        text: qsTr("表格三")
                         contentItem: Text {
                             anchors.centerIn: commandsButton
                             text: commandsButton.text
@@ -468,6 +476,7 @@ App {
                         }
                     }
                 }
+
                 Row {
                     anchors {
                         right: parent.right
@@ -539,8 +548,8 @@ App {
                 Item {
                     id: tabRect
                     anchors {
-                        left: mcuTabBar.left
-                        top: mcuTabBar.bottom
+                        left: columnTabBar.left
+                        top: columnTabBar.bottom
                         right: parent.right
                         bottom: parent.bottom
                         bottomMargin: 50
@@ -555,7 +564,8 @@ App {
                     signal find(string text);
                     signal redo();
                     signal undo();
-                    property alias currentIndex : mcuTabBar.currentIndex
+
+                    property alias currentIndex : columnTabBar.currentIndex
                     onCurrentIndexChanged: {
                         if (currentIndex === 0) {
                             commandsTable.visible = false;
@@ -576,6 +586,7 @@ App {
                         updateSignalsName();
                         updateDatas();
                     }
+
                     Component.onCompleted: {
                         commandsTable.visible = false;
                         specialSignalsTable.visible = false;
@@ -742,26 +753,30 @@ App {
                     function showInfo(info) {
                         root.showMessageBox(info)
                     }
+
                     function checkData() {
                         var err1 =  signalsTable.checkWithoutShowInfo();
                         if (err1) {
-                            return "状态帧 " + err1;
+                            return "表格一 " + err1;
                         }
 
                         var err2 = specialSignalsTable.checkWithoutShowInfo();
                         if (err2) {
-                            return "事件帧 " + err2;
+                            return "表格二 " + err2;
                         }
 
                         var err3 = commandsTable.checkWithoutShowInfo();
                         if (err3) {
-                            return "下行帧 " + err3
+                            return "表格三 " + err3
                         }
+                        /*
                         if (jsonListModel.mcuVersion === "" || jsonListModel.mcuVersion === "0") {
                             return "请输入Mcu版本";
                         }
                         return "";
+                        */
                     }
+
                     function clearReocrder() {
                         signalsTable.clearRecorder();
                         specialSignalsTable.clearRecorder();
@@ -835,8 +850,8 @@ App {
                         property string source: root.sourceFileName
                         onSourceChanged: {
                             if (source) {
-                                heartBeatIntervalText.isInited = false
-                                mcuVersionText.isInited = false
+                                //heartBeatIntervalText.isInited = false
+                                //mcuVersionText.isInited = false
                                 loadFromSource(source);
                             }
                         }
@@ -852,10 +867,10 @@ App {
                         }
                         onParseEnd: {
                             tabRect.updateDatas();
-                            mcuVersionText.text = mcuVersion
-                            heartBeatIntervalText.text = heartBeatInterval
-                            heartBeatIntervalText.isInited = true
-                            mcuVersionText.isInited = true
+                            //mcuVersionText.text = mcuVersion
+                            //heartBeatIntervalText.text = heartBeatInterval
+                            //heartBeatIntervalText.isInited = true
+                            //mcuVersionText.isInited = true
                             busyRect.close();
                             TableStatus.hasLoadedModel = true;
                             TableStatus.setMcuData(jsonListModel.getModelData(false));
@@ -921,29 +936,31 @@ App {
                             Repeater {
                                 model: ListModel {
                                     ListElement {
-                                        name: "简易模板    ";
+                                        name: "备忘录";
                                         backIcon: "qrc:/Image/Template/simpleTemplateIconG.png";
                                         frontIcon: "qrc:/Image/Template/simpleTemplateIcon.png";
                                         path:":/Json/sample.json"
                                     }
                                     ListElement {
-                                        name: "燃油车模板";
+                                        name: "菜谱";
                                         backIcon: "qrc:/Image/Template/fuelCarG.png";
                                         frontIcon: "qrc:/Image/Template/fuelCar.png";
                                         path:":/Json/fuelCar.json"
                                     }
                                     ListElement {
-                                        name: "电动车模板";
+                                        name: "日志";
                                         backIcon: "qrc:/Image/Template/electrombileG.png";
                                         frontIcon: "qrc:/Image/Template/electrombile.png";
                                         path:":/Json/electricCar.json"
                                     }
+                                    /*
                                     ListElement {
                                         name: "混动车模板";
                                         backIcon: "qrc:/Image/Template/hybridG.png";
                                         frontIcon: "qrc:/Image/Template/hybrid.png";
                                         path:":/Json/mixingCar.json"
                                     }
+                                    */
                                 }
                                 MHoverButton {
                                     width: 50
@@ -967,7 +984,7 @@ App {
                     //先置空，再赋值，保证能多次加载同一个文件
                     root.sourceFileName = ""
                     root.sourceFileName = filePath;
-                    mcuTabBar.currentIndex = 0;
+                    columnTabBar.currentIndex = 0;
                     TableStatus.hasSaved = true;
                 }
                 function saveToJson(filePath, withReloadEvent) {
@@ -1055,8 +1072,8 @@ App {
                     commandsTable.clear();
                     root.sourceFileName = "";
                     TableStatus.hasSaved = true;
-                    heartBeatIntervalText.isInited = false
-                    mcuVersionText.isInited = false
+                    //heartBeatIntervalText.isInited = false
+                    //mcuVersionText.isInited = false
                 }
 
 
