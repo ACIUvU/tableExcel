@@ -433,7 +433,8 @@ App {
                     currentIndex: 0
                     TabButton {
                         id: signalsButton
-                        text: qsTr("表格一")
+                        text: qsTr("今日安排")
+                        //text: qsTr("今日事程")
                         contentItem: Text {
                             anchors.centerIn: signalsButton
                             text: signalsButton.text
@@ -449,7 +450,8 @@ App {
                     }
                     TabButton {
                         id: specialSignalsButton
-                        text: qsTr("表格二")
+                        //text: qsTr("表格二")
+                        text: qsTr("本周事程")
                         contentItem: Text {
                             anchors.centerIn: specialSignalsButton
                             text: specialSignalsButton.text
@@ -465,7 +467,8 @@ App {
                     }
                     TabButton {
                         id: commandsButton
-                        text: qsTr("表格三")
+                        //text: qsTr("表格三")
+                        text: qsTr("当月目标")
                         contentItem: Text {
                             anchors.centerIn: commandsButton
                             text: commandsButton.text
@@ -822,14 +825,20 @@ App {
                         signalNames = array;
                     }
                     //header数据
+                    //今日安排
                     readonly property var signalsHeaderModel: [
-                        "name", "bits", "coefficient", "offset", "min", "max", "invalid", "description"
+                        //"name", "bits", "coefficient", "offset", "min", "max", "invalid", "description"
+                        "事程", "开始时间", "持续时间", "description"
                     ]
+                    //本周事程
                     readonly property var specialSignalHeaderModel: [
-                        "type", "name", "description"
+                        //"type", "name", "description"
+                        "事件", "开始日期", "结束日期","description"
                     ]
+                    //当月目标
                     readonly property var commandsHeaderModel: [
-                        "name","bits","default","min", "max", "description"
+                        //"name","bits","default","min", "max", "description"
+                        "目标","开始日期","截止日期t","description","总结"
                     ]
                     //固定名称
                     readonly property var fixedNames : [
@@ -961,7 +970,7 @@ App {
                             Repeater {
                                 model: ListModel {
                                     ListElement {
-                                        name: "备忘录";
+                                        name: "学习日";
                                         backIcon: "qrc:/Image/Template/simpleTemplateIconG.png";
                                         frontIcon: "qrc:/Image/Template/simpleTemplateIcon.png";
                                         path:":/Json/sample.json"
@@ -973,19 +982,19 @@ App {
                                         path:":/Json/fuelCar.json"
                                     }
                                     ListElement {
-                                        name: "日志";
+                                        name: "工作日";
                                         backIcon: "qrc:/Image/Template/electrombileG.png";
                                         frontIcon: "qrc:/Image/Template/electrombile.png";
                                         path:":/Json/electricCar.json"
                                     }
-                                    /*
+
                                     ListElement {
-                                        name: "混动车模板";
+                                        name: "出游日";
                                         backIcon: "qrc:/Image/Template/hybridG.png";
                                         frontIcon: "qrc:/Image/Template/hybrid.png";
                                         path:":/Json/mixingCar.json"
                                     }
-                                    */
+
                                 }
                                 MHoverButton {
                                     width: 50
@@ -1015,7 +1024,7 @@ App {
                 function saveToJson(filePath, withReloadEvent) {
                     var err = jsonListModel.saveModelsToFile(filePath, tableStatus.saveWithIndented)
                     if (err !== "") {
-                        root.showMessageBox(qsTr("Mcu保存出错： " + err));
+                        root.showMessageBox(qsTr("保存出错： " + err));
                     } else {
                         tableStatus.hasSaved = true;
                         root.sourceFileName = filePath;
