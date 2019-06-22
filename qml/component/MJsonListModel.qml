@@ -160,12 +160,12 @@ Item {
                     return undefined;
                 if (key === "order" )
                     return undefined;
-                if ( key === "default") {
-                    if (Number(value) != undefined)
-                        return Number(value);
-                    else
-                        return undefined;
-                }
+                //if ( key === "default") {
+                   // if (Number(value) != undefined)
+                       // return Number(value);
+                    //else
+                        //return undefined;
+                //}
                 return value;
             }, 4);
         } else {
@@ -175,12 +175,12 @@ Item {
                 //if (key === "order" || key === "objectName" || key === "logicMax")
                 if (key === "order" )
                     return undefined;
-                if (key === "default") {
-                    if (Number(value) != undefined)
-                        return Number(value);
-                    else
-                        return undefined;
-                }
+                //if (key === "default") {
+                    //if (Number(value) != undefined)
+                      //  return Number(value);
+                   // else
+                       // return undefined;
+                //}
                 return value;
             });
         }

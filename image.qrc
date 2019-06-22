@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>Image/demo1.png</file>
         <file>Image/Project/import.png</file>
         <file>Image/Project/importBlue.png</file>
         <file>Image/Project/save.png</file>
@@ -21,10 +20,6 @@
         <file>Image/Table/redoB.png</file>
         <file>Image/Table/undo.png</file>
         <file>Image/Table/undoB.png</file>
-        <file>Image/Template/electrombile.png</file>
-        <file>Image/Template/electrombileG.png</file>
-        <file>Image/Template/fuelCar.png</file>
-        <file>Image/Template/fuelCarG.png</file>
         <file>Image/Template/hybrid.png</file>
         <file>Image/Template/hybridG.png</file>
         <file>Image/Template/simpleTemplateIcon.png</file>
@@ -33,12 +28,8 @@
         <file>Image/Tools/arrowDownGray.png</file>
         <file>Image/Tools/arrowUpBlue.png</file>
         <file>Image/Tools/arrowUpGray.png</file>
-        <file>Image/Tools/checkG.png</file>
-        <file>Image/Tools/checkR.png</file>
         <file>Image/Tools/importG.png</file>
         <file>Image/Tools/importO.png</file>
-        <file>Image/Tools/promptG.png</file>
-        <file>Image/Tools/promptR.png</file>
         <file>Image/Tools/searchIconB.png</file>
         <file>Image/Tools/searchIconG.png</file>
     </qresource>

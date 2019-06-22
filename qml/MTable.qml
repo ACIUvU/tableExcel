@@ -1669,7 +1669,7 @@ Item {
                          "mcuVersionMax", "mcuVersionMid", "mcuVersionMin", "projectModeEnabled"
                         ];
             } else if (root.tableType === "month") {
-                array = ["applicationState"];
+                array = ["cationState"];
             }
             */
             var array = root.fixedNames;
@@ -1687,7 +1687,7 @@ Item {
             }
 
             if (array.length > 0 && array[0] !== "") {
-                info += "缺少固定的name:";
+                info += "操作成功";
                 for (var i = 0; i < array.length; ++i) {
                     if (i % 4 == 0)
                         info += "<br> ";

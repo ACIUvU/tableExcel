@@ -272,10 +272,12 @@ App {
                         }
                     }
 */
+                    /*
                     Item {
                         height: parent.height
                         width: 50
                     }
+                    */
                     Item {
                         height: parent.height
                         width: currentFileText.width + 10
@@ -961,7 +963,7 @@ App {
                         visible: false
                         dataModel: jsonListModel.thismonth
                         headerModel: tabRect.thismonthHeaderModel
-                        fixedNames: ["applicationState"]
+                        fixedNames: [""]
                         tableType: "month"
                         signalNames: tabRect.signalNames
                         onDataEdited: {
@@ -987,26 +989,27 @@ App {
                                         name: "正常工作日";
                                         backIcon: "qrc:/Image/Template/simpleTemplateIconG.png";
                                         frontIcon: "qrc:/Image/Template/simpleTemplateIcon.png";
-                                        path:":/Json/sample.json"
+                                        path:"qrc:/Json/sample.json"
                                     }
+                                    /*
                                     ListElement {
                                         name: "项目过程";
                                         backIcon: "qrc:/Image/Template/fuelCarG.png";
                                         frontIcon: "qrc:/Image/Template/fuelCar.png";
-                                        path:":/Json/fuelCar.json"
+
                                     }
                                     ListElement {
                                         name: "考试月";
                                         backIcon: "qrc:/Image/Template/electrombileG.png";
                                         frontIcon: "qrc:/Image/Template/electrombile.png";
-                                        path:":/Json/electricCar.json"
-                                    }
 
+                                    }
+                                    */
                                     ListElement {
                                         name: "假期";
                                         backIcon: "qrc:/Image/Template/hybridG.png";
                                         frontIcon: "qrc:/Image/Template/hybrid.png";
-                                        path:":/Json/mixingCar.json"
+                                        path:":/Json/hoilday.json"
                                     }
 
                                 }
@@ -1017,10 +1020,12 @@ App {
                                     frontImageSource: frontIcon
                                     tipText: name
                                     onClicked: {
-                                        var ret = tableStatus.loadTemplateFile(path)
-                                        if (ret !== "") {
-                                            console.log(ret)
-                                        }
+                                        //root.loadFromJson(fileInfo.toUrl(path))
+                                        console.log(path)
+                                        //var ret = tableStatus.loadTemplateFile(path)
+                                        //if (ret !== "") {
+                                        //    console.log(ret)
+                                        //}
                                     }
                                 }
                             }
@@ -1105,12 +1110,12 @@ App {
                 }
                 function projectSave() {
                     if (tableStatus.sourceJsonFilePath) {
-                        var err = tabRect.checkData();
-                        if (err) {
-                            root.showMessageBox(err)
-                        } else {
+                        //var err = tabRect.checkData();
+                        //if (err) {
+                            root.showMessageBox("操作成功")
+                         //else {
                             root.saveToJson(tableStatus.sourceJsonFilePath, false);
-                         }
+                         //}
                     }
                 }
                 function saveAs() {
