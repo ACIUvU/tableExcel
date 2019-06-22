@@ -402,10 +402,18 @@ Item {
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
 
+                        /*
                         text: {
                             var obj = dataModel.get(styleData.row);
                             if (obj && obj[styleData.role])
                                 return obj[styleData.role]
+                            return ""
+                        }
+                        */
+                        text: {
+                            var obj = dataModel.get(styleData.row);
+                            if (obj && obj["事件"])
+                                return obj["事件"]
                             return ""
                         }
 
@@ -415,6 +423,7 @@ Item {
                         selectedTextColor: "#ffffff"
                         color: parent.isSelected ? (isFixedName ? "red" : "#ededed") : "#272727"
                         property bool isUserClicked: false
+                        /*
                         property bool isFixedName: {
                             if (!styleData.value || styleData.value === "")
                                 return false;
@@ -426,6 +435,7 @@ Item {
                             }
                             return isFixedName;
                         }
+                        */
                         //  只能输入数字和英文字母,且第一个字符必须是小写英文字母
                         //                        validator:RegExpValidator {
                         //                            regExp: /[a-z][0-9a-zA-Z_]|^\\s*$*/
@@ -436,8 +446,8 @@ Item {
                         }
                         onEditingFinished: {
                             if (styleData.row >= 0 && styleData.value !== text) {
-                                tableView.recordModifyData(styleData.row, styleData.role, styleData.value, text ? text : "")
-                                dataModel.setProperty(styleData.row, styleData.role, text ? text : "");
+                                tableView.recordModifyData(styleData.row, styleData.role, styleData.value, text);
+                                dataModel.setProperty(styleData.row, styleData.role, text);
                                 tableView.updateDatas();
                             }
                         }
@@ -883,20 +893,22 @@ Item {
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
                         //                        text: (styleData.value !== undefined && styleData.value !== null) ? styleData.value : ""
-                        /*
+
                         text: {
                             var obj = dataModel.get(styleData.row);
                             if (obj && (obj[styleData.role] !== null) && (obj[styleData.role] !== "") && (obj[styleData.role] !== undefined))
-                                return parseFloat(obj[styleData.role])
+                                //return parseFloat(obj[styleData.role])
+                                return obj[styleData.role]
                             return ""
                         }
-                        */
+                        /*
                         text: {
                             var obj = dataModel.get(styleData.row);
                             if (obj && obj[styleData.role])
                                 return obj[styleData.role]
                             return ""
                         }
+                        */
                         activeFocusOnPress: true
                         selectByMouse: true
                         selectionColor: "#4283aa"
@@ -924,8 +936,8 @@ Item {
                         */
                         onEditingFinished: {
                             if (styleData.row >= 0 && styleData.value !== text) {
-                                tableView.recordModifyData(styleData.row, styleData.role, styleData.value, text ? text : "")
-                                dataModel.setProperty(styleData.row, styleData.role, text ? text : "");
+                                tableView.recordModifyData(styleData.row, styleData.role, styleData.value, text);
+                                dataModel.setProperty(styleData.row, styleData.role, text);
                                 tableView.updateDatas();
                             }
                         }
@@ -988,6 +1000,15 @@ Item {
                             return ""
                         }
                         */
+                        text: {
+                            var obj = dataModel.get(styleData.row);
+                            if (obj && (obj[styleData.role] !== null) && (obj[styleData.role] !== "") && (obj[styleData.role] !== undefined))
+                                //return parseFloat(obj[styleData.role])
+                                return obj[styleData.role]
+                            return ""
+                        }
+
+
                         activeFocusOnPress: true
                         selectByMouse: true
                         selectionColor: "#4283aa"
@@ -1014,8 +1035,9 @@ Item {
                         */
                         onEditingFinished: {
                             if (styleData.row >= 0 && styleData.value !== text) {
-                                tableView.recordModifyData(styleData.row, styleData.role, styleData.value, text ? text : "")
-                                dataModel.setProperty(styleData.row, styleData.role, text ? text : "");
+                                tableView.recordModifyData(styleData.row, styleData.role, styleData.value, text);
+                                console.log("111111")
+                                dataModel.setProperty(styleData.row, styleData.role, text);
                                 tableView.updateDatas();
                             }
                         }
@@ -1397,7 +1419,7 @@ Item {
                 var orderTab = columnComponent.createObject(tableView)
                 orderTab.title = qsTr("序号")
                 orderTab.role = "order"
-                orderTab.width = 100
+                orderTab.width = 50
                 tableView.addColumn(orderTab)
 //            }
 
@@ -1408,23 +1430,23 @@ Item {
                 tab.role = name
                 if (name === "description")
                     tab.width = 300
-                else if (name === "default" || name === "invalid" || name === "name")
+                else if (name === "default")
                     tab.width = 160;
                 tableView.addColumn(tab)
             }
         }
         function updateDatas() {
-            if (root.tableType !== "week") {
+            //if (root.tableType !== "week") {
                 var order = 1;
                 var bits = 0;
                 for (var i = 0; i < dataModel.count; ++i) {
                     var obj = dataModel.get(i);
-                    var num = obj["bits"];
-                    order += parseInt(bits / 8);
-                    bits = bits % 8 + num;
+                    //var num = obj["bits"];
+                    //order += parseInt(bits / 8);
+                    //bits = bits % 8 + num;
                     dataModel.setProperty(i, "order", order)
                 }
-            }
+            //}
         }
         /*
         readonly property var thisdayRow : {"name": "", "bits": 1, "coefficient": 1, "offset": 0, "invalid": "", "description": ""}

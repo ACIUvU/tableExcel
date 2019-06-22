@@ -177,7 +177,7 @@ App {
                 }
 */
 
-                //右下角
+                //左下角
                 //FMHoverButton名字该改一改
                 Row {
 
@@ -220,12 +220,14 @@ App {
                         frontImageSource: "qrc:/Image/Project/saveasBlue.png"
                         onClicked: {
                             forceActiveFocus();
+                            /*
                             var err = tabRect.checkData();
                             if (err) {
                                 root.showMessageBox(err)
                             } else {
+                            */
                                 root.saveAs();
-                            }
+                            //}
                         }
                     }
 /*
@@ -1088,16 +1090,18 @@ App {
                 }
 
                 function noProjectSave() {
+                    /*
                     var err = tabRect.checkData();
                     if (err) {
                         root.showMessageBox(err)
                     } else {
+                    */
                         if (root.sourceFileName) {
                             root.saveToJson(root.sourceFileName, false);
                         } else {
                             saveAs();
                         }
-                    }
+                    //}
                 }
                 function projectSave() {
                     if (tableStatus.sourceJsonFilePath) {
@@ -1110,12 +1114,14 @@ App {
                     }
                 }
                 function saveAs() {
+                    /*
                     var err = tabRect.checkData();
                     if (err) {
                         root.showMessageBox(err)
                     } else {
+                    */
                         mcuJsonfileDialog.saveFile();
-                    }
+                    //}
                 }
                 function projectClose() {
                     thisdayTable.clear();

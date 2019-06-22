@@ -160,7 +160,7 @@ Item {
                     return undefined;
                 if (key === "order" )
                     return undefined;
-                if (key === "日期" || key === "结束日期" || key === "事件" || key === "default") {
+                if ( key === "default") {
                     if (Number(value) != undefined)
                         return Number(value);
                     else
@@ -172,9 +172,10 @@ Item {
             str = JSON.stringify(obj, function (key, value) {
                 if (value === undefined || value === null || value === "")
                     return undefined;
-                if (key === "order" || key === "objectName" || key === "logicMax")
+                //if (key === "order" || key === "objectName" || key === "logicMax")
+                if (key === "order" )
                     return undefined;
-                if (key === "min" || key === "max" || key === "coefficient" || key === "default") {
+                if (key === "default") {
                     if (Number(value) != undefined)
                         return Number(value);
                     else
