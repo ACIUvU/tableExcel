@@ -1090,6 +1090,7 @@ Item {
                     property bool isSelected: tableView.currentColumn === styleData.column &&
                                               tableView.currentRow === styleData.row
                     property alias isMaintain: defaultCheckBox.checked
+                    /*
                     onIsMaintainChanged: {
                         //取消勾选时，将maintain置空
                         if (!isMaintain) {
@@ -1098,6 +1099,7 @@ Item {
 
                         }
                     }
+                    */
                     CheckBox {
                         id: defaultCheckBox
 
@@ -1183,7 +1185,7 @@ Item {
                             }
                         }
                         model: root.signalNames
-                        property bool isUserClicked: false
+                        property bool isUserClicked: true
                         property bool isInited: false
                         property string modelValue: {
                             var obj = dataModel.get(styleData.row)
@@ -1234,10 +1236,18 @@ Item {
                         anchors.topMargin: 1
                         anchors.bottomMargin: 1
                         visible: !parent.isMaintain
+                        /*
                         text : {
                             var obj = dataModel.get(styleData.row);
                             if (obj && (obj[styleData.role] !== null) && (obj[styleData.role] !== "") && (obj[styleData.role] !== undefined))
                                 return parseFloat(obj[styleData.role])
+                            return ""
+                        }
+                        */
+                        text: {
+                            var obj = dataModel.get(styleData.row);
+                            if (obj && obj[styleData.role])
+                                return obj[styleData.role]
                             return ""
                         }
                         activeFocusOnPress: true
@@ -1248,19 +1258,32 @@ Item {
                         horizontalAlignment: TextInput.AlignHCenter
                         verticalAlignment: TextInput.AlignVCenter
                         property bool isUserClicked: false
+
+                        /*
                         //只能输入数字、负号和小数点
                         validator:RegExpValidator {
                             regExp: /-?[0-9]*.?[0-9]*/
-                        }
+
+                        //}
+                        /*
                         onDisplayTextChanged: {
                             if (isUserClicked) root.dataEdited();
                         }
+
                         onEditingFinished: {
                             if (styleData.row >= 0 && styleData.value !== parseFloat(text)) {
                                 tableView.recordModifyData(styleData.row, styleData.role, styleData.value,
                                                            (text === null || text === undefined || text === "") ? "" : parseFloat(text));
                                 dataModel.setProperty(styleData.row, styleData.role,
                                                       (text === null || text === undefined || text === "") ? "" : parseFloat(text));
+                                tableView.updateDatas();
+                            }
+                        }
+                        */
+                        onEditingFinished: {
+                            if (styleData.row >= 0 && styleData.value !== text) {
+                                tableView.recordModifyData(styleData.row, styleData.role, styleData.value, text ? text : "")
+                                dataModel.setProperty(styleData.row, styleData.role, text ? text : "");
                                 tableView.updateDatas();
                             }
                         }
