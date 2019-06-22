@@ -782,6 +782,7 @@ App {
                         root.showMessageBox(info)
                     }
 
+
                     function checkData() {
                         var err1 =  thisdayTable.checkWithoutShowInfo();
                         if (err1) {
@@ -797,6 +798,7 @@ App {
                         if (err3) {
                             return "当月目标" + err3
                         }
+                        return "";
                         /*
                         if (jsonListModel.mcuVersion === "" || jsonListModel.mcuVersion === "0") {
                             return "请输入Mcu版本";
@@ -804,6 +806,8 @@ App {
                         return "";
                         */
                     }
+
+
 
                     function clearReocrder() {
                         thisdayTable.clearRecorder();
@@ -841,12 +845,15 @@ App {
                         "事件","优先级","日期","结束日期","description"
                     ]
                     //固定名称
+                    /*
                     readonly property var fixedNames : [
                         "rpm", "igOn", "theme", "language", "dateTime",
                         "enterKey", "backKey", "nextKey", "prevKey", "speed",
                         "hwVersionMax", "hwVersionMid", "hwVersionMin",
                         "mcuVersionMax", "mcuVersionMid", "mcuVersionMin", "projectModeEnabled"
                     ]
+                    */
+                    readonly property var fixedNames :[]
                     Rectangle {
                         id: busyRect
                         z: 3
@@ -1026,6 +1033,7 @@ App {
                     columnTabBar.currentIndex = 0;
                     tableStatus.hasSaved = true;
                 }
+
                 function saveToJson(filePath, withReloadEvent) {
                     var err = jsonListModel.saveModelsToFile(filePath, tableStatus.saveWithIndented)
                     if (err !== "") {
@@ -1035,6 +1043,7 @@ App {
                         root.sourceFileName = filePath;
                     }
                 }
+
                 function showClearAllBox() {
                     popDialog.reset();
                     popDialog.open();
@@ -1049,6 +1058,7 @@ App {
                         popDialog.close();
                     }
                 }
+
                 function showMessageBox(message) {
                     popDialog.reset();
                     popDialog.open();
@@ -1058,12 +1068,13 @@ App {
                     popDialog.width = 600;
                     popDialog.height = 400;
                     popDialog.okClickFunc = function() {
-                        tabRect.clear();
+                        //tabRect.clear();
                         tableStatus.hasSaved = false;
                         popDialog.close();
                     }
 
                 }
+
                 function showTemplateBox() {
                     popDialog.reset();
                     popDialog.open();
@@ -1075,6 +1086,7 @@ App {
                     popDialog.height = 200;
                     popDialog.contentComponent = templateWindow
                 }
+
                 function noProjectSave() {
                     var err = tabRect.checkData();
                     if (err) {
@@ -1094,7 +1106,7 @@ App {
                             root.showMessageBox(err)
                         } else {
                             root.saveToJson(tableStatus.sourceJsonFilePath, false);
-                        }
+                         }
                     }
                 }
                 function saveAs() {

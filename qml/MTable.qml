@@ -92,6 +92,8 @@ Item {
     function clear() {
         tableView.clear(true);
     }
+
+
     //检查整字节,检查名字
     function check() {
         var err1 = tableView.checkBitLength();
@@ -112,14 +114,17 @@ Item {
     function checkWithoutShowInfo() {
         //var err1 = tableView.checkBitLength();
         var err2 = "";
+        /*
         if (root.tableType === "week") {
             err2 = tableView.checkSpecialSignals();
         } else {
+        */
             err2 = tableView.checkNames();
-        }
+        //}
         //return err1 + err2;
         return err2;
     }
+
 
     function redo() {
         var str = recorder.redo();
@@ -878,10 +883,18 @@ Item {
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
                         //                        text: (styleData.value !== undefined && styleData.value !== null) ? styleData.value : ""
+                        /*
                         text: {
                             var obj = dataModel.get(styleData.row);
                             if (obj && (obj[styleData.role] !== null) && (obj[styleData.role] !== "") && (obj[styleData.role] !== undefined))
                                 return parseFloat(obj[styleData.role])
+                            return ""
+                        }
+                        */
+                        text: {
+                            var obj = dataModel.get(styleData.row);
+                            if (obj && obj[styleData.role])
+                                return obj[styleData.role]
                             return ""
                         }
                         activeFocusOnPress: true
@@ -891,19 +904,28 @@ Item {
                         color: parent.isSelected ? "#ededed" : "#272727"
                         property bool isUserClicked: false
                         //只能输入数字、负号和小数点
-                        validator:RegExpValidator {
-                            regExp: /-?[0-9]*.?[0-9]*/
-                        }
+                        //validator:RegExpValidator {
+                        //    regExp: /-?[0-9]*.?[0-9]*/
+                        //}
                         //  编辑完成时，将displayText写入model
                         onDisplayTextChanged: {
                             if (isUserClicked) root.dataEdited();
                         }
+                        /*
                         onEditingFinished: {
                             if (styleData.row >= 0 && styleData.value !== parseFloat(text)) {
                                 tableView.recordModifyData(styleData.row, styleData.role, styleData.value,
                                                            (text === null || text === undefined || text === "") ? "" : parseFloat(text));
                                 dataModel.setProperty(styleData.row, styleData.role,
                                                       (text === null || text === undefined || text === "") ? "" : parseFloat(text));
+                                tableView.updateDatas();
+                            }
+                        }
+                        */
+                        onEditingFinished: {
+                            if (styleData.row >= 0 && styleData.value !== text) {
+                                tableView.recordModifyData(styleData.row, styleData.role, styleData.value, text ? text : "")
+                                dataModel.setProperty(styleData.row, styleData.role, text ? text : "");
                                 tableView.updateDatas();
                             }
                         }
@@ -958,12 +980,14 @@ Item {
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
                         //                        text: (styleData.value !== undefined && styleData.value !== null) ? styleData.value : ""
+                        /*
                         text: {
                             var obj = dataModel.get(styleData.row);
                             if (obj && (obj[styleData.role] !== null) && (obj[styleData.role] !== "") && (obj[styleData.role] !== undefined))
                                 return parseFloat(obj[styleData.role])
                             return ""
                         }
+                        */
                         activeFocusOnPress: true
                         selectByMouse: true
                         selectionColor: "#4283aa"
@@ -971,18 +995,27 @@ Item {
                         color: parent.isSelected ? "#ededed" : "#272727"
                         property bool isUserClicked: false
                         //只能输入数字、负号和小数点
-                        validator:RegExpValidator {
-                            regExp: /-?[0-9]*.?[0-9]*/
-                        }
+                        //validator:RegExpValidator {
+                         //   regExp: /-?[0-9]*.?[0-9]*/
+                        //}
                         onDisplayTextChanged: {
                             if (isUserClicked) root.dataEdited();
                         }
+                        /*
                         onEditingFinished: {
                             if (styleData.row >= 0 && styleData.value !== parseFloat(text)) {
                                 tableView.recordModifyData(styleData.row, styleData.role, styleData.value,
                                                            (text === null || text === undefined || text === "") ? "" : parseFloat(text))
                                 dataModel.setProperty(styleData.row, styleData.role,
                                                       (text === null || text === undefined || text === "") ? "" : parseFloat(text));
+                                tableView.updateDatas();
+                            }
+                        }
+                        */
+                        onEditingFinished: {
+                            if (styleData.row >= 0 && styleData.value !== text) {
+                                tableView.recordModifyData(styleData.row, styleData.role, styleData.value, text ? text : "")
+                                dataModel.setProperty(styleData.row, styleData.role, text ? text : "");
                                 tableView.updateDatas();
                             }
                         }
@@ -1536,6 +1569,7 @@ Item {
             recorder.record(JSON.stringify(recordObj));
         }
 
+        /*
         function checkBits() {
             var bytes = 1;
             var bits = 0;
@@ -1583,7 +1617,7 @@ Item {
             }
             return info;
         }
-
+        */
 
         function checkNames() {
             var info = "";
@@ -1603,6 +1637,7 @@ Item {
                 }
             }
 
+            /*
             var array = root.fixedNames;
             //外部传进来的Array，在第二次check的时候，会莫名其妙变成空的，这里先用固定的Array
             if (root.tableType === "today") {
@@ -1614,7 +1649,8 @@ Item {
             } else if (root.tableType === "month") {
                 array = ["applicationState"];
             }
-
+            */
+            var array = root.fixedNames;
             //检查 固定名称
             if (array.length > 0) {
                 for (var i = 0; i < dataModel.count; ++i) {
@@ -1640,6 +1676,7 @@ Item {
             }
             return info;
         }
+
 
         /*
         function checkSpecialSignals() {
