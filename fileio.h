@@ -1,15 +1,13 @@
 #ifndef FILEIO_H
 #define FILEIO_H
 
-//#pragma once
-
 #include <QUrl>
 #include <QFile>
 #include <QObject>
 #include <QString>
 #include <QJsonDocument>
 
-//为qml提供文件读写
+//提供文件读写
 class FileIO : public QObject {
     Q_OBJECT
 public:

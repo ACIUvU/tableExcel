@@ -7,24 +7,11 @@ Item {
     signal parseStart()
     signal parseEnd()
 
+    //用以错误提示
     property string error: ""
 
-    //默认1000
-    //property int heartBeatInterval: 1000
-    //property string mcuVersion: ""
-    /*
-    property ListModel signalsModel: ListModel {
-        id: signalsListModel; dynamicRoles: true
-    }
-    property ListModel specialthisday: ListModel {
-        id: specialsignalsListModel; dynamicRoles: true
-    }
-    property ListModel commandsModel: ListModel {
-        id: commandsModelListModel; dynamicRoles: true
-    }
-    */
     property ListModel thisday: ListModel {
-        //动态角色
+        //动态角色，参考QML文档
 
         id: thisdayListModel; dynamicRoles: true
     }
@@ -34,62 +21,19 @@ Item {
     property ListModel thismonth: ListModel {
         id: thismonthListModel; dynamicRoles: true
     }
-    //property string heartBeatIntervalQuery: ""
-    //property string mcuVersionQuery: ""
-    /*
-    property string signalsQuery: ""
-    property string specialSignalsQuery: ""
-    property string commandsQuery: ""
-    */
+
     //查询
     property string thisdayQuery: ""
     property string thisweekQuery: ""
     property string thismonthQuery: ""
-    /*
-    readonly property var specialSignalsHeader: [
-        "type", "name", "description"
-    ]
-    */
+
 
     property string jsonStr: ""
 
-    /*
-    onHeartBeatIntervalQueryChanged: {
-        var retArray = queryFromJsonToArray(heartBeatIntervalQuery);
-        var val = parseInt(retArray);
-        if (val) {
-            heartBeatInterval = val;
-        } else {
-            heartBeatInterval = 1000;
-        }
-    }
-    onMcuVersionQueryChanged: {
-        var retArray = queryFromJsonToArray(mcuVersionQuery);
-        if (retArray) {
-            var str = retArray.toString();
-            mcuVersion = str;
-        }
-    }
-    */
-    /*
-    onSignalsQueryChanged: {
-        queryToModel(thisdayListModel, thisdayQuery, null);
-    }
-    onSpecialSignalsQueryChanged: {
-        queryToModel(thisweekListModel, thisweekQuery, specialSignalsHeader);
-    }
-    onCommandsQueryChanged: {
-        queryToModel(thismonthListModel, thismonthQuery, null);
-    }
-    */
+    //当请求查询的时候
     onThisdayQueryChanged: {
         queryToModel(thisdayListModel, thisdayQuery, null);
-    }
-    /*
-    onThisweekQueryChanged: {
-        queryToModel(thisweekListModel, thisweekQuery, specialSignalsHeader);
-    }
-    */
+    }    
     onThisweekQueryChanged: {
         queryToModel(thisweekListModel, thisweekQuery, null);
     }
@@ -111,6 +55,7 @@ Item {
         updateDatas();
         jsonListModel.parseEnd();
     }
+
     //保存models数据到文件
     function saveModelsToFile(filePath, isIndented) {
         var str = getModelData(isIndented);
@@ -122,6 +67,7 @@ Item {
             return "";
         }
     }
+    //获取和简要处理数据文件
     function getModelData(isIndented) {
         var thisdayArray = getObjectsToArray(thisday);
         var thisweekArray = getObjectsToArray(thisweek);
@@ -148,8 +94,6 @@ Item {
                 thismonthArray[i] = newObj;
             }
         }
-        //obj.version = mcuVersion;
-        //obj.heartBeatInterval = (heartBeatInterval === 0 ? 1000 : heartBeatInterval);
         obj.today =  thisdayArray;
         obj.week = thisweekArray;
         obj.month = thismonthArray;
@@ -160,27 +104,15 @@ Item {
                     return undefined;
                 if (key === "order" )
                     return undefined;
-                //if ( key === "default") {
-                   // if (Number(value) != undefined)
-                       // return Number(value);
-                    //else
-                        //return undefined;
-                //}
                 return value;
             }, 4);
         } else {
             str = JSON.stringify(obj, function (key, value) {
                 if (value === undefined || value === null || value === "")
                     return undefined;
-                //if (key === "order" || key === "objectName" || key === "logicMax")
+
                 if (key === "order" )
                     return undefined;
-                //if (key === "default") {
-                    //if (Number(value) != undefined)
-                      //  return Number(value);
-                   // else
-                       // return undefined;
-                //}
                 return value;
             });
         }
@@ -188,28 +120,11 @@ Item {
     }
     //update
     function updateDatas() {
-        //var retArray = queryFromJsonToArray(heartBeatIntervalQuery);
-        //var val = parseInt(retArray);
-        /*
-        if (val) {
-            heartBeatInterval = val;
-        } else {
-            heartBeatInterval = 1000;
-        }
-
-        retArray = queryFromJsonToArray(mcuVersionQuery)
-        if (retArray) {
-            var str = retArray.toString();
-            mcuVersion = str;
-        }
-        */
-
         queryToModel(thisdayListModel, thisdayQuery, null);
-        //queryToModel(thisweekListModel, thisweekQuery, specialSignalsHeader);
         queryToModel(thisweekListModel, thisweekQuery, null);
         queryToModel(thismonthListModel, thismonthQuery, null);
     }
-    //使用JsonPath查询数据, 不影响model
+    //使用JsonPath查询数据
     function queryFromJsonToArray(query) {
         if (jsonStr === "" || query === "")
             return [];
@@ -238,11 +153,11 @@ Item {
         objectArray = JsonPath.jsonPath(objectArray, query);
         for (var key in objectArray) {
             var obj = objectArray[key];
-
-            //invalid convert to Hex
+            /*
             if (obj["invalid"]) {
                 obj["invalid"] = stringToHex(obj["invalid"])
             }
+            */
             //fliter no need key and value
             if (fliter && fliter.length > 0) {
                 var newObj = Object.create(null);

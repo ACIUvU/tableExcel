@@ -1,3 +1,33 @@
+//组长：wcy  学号：2017051604072
+//组员：sh   学号：2017051604064
+//    zzh   学号：2017051604065
+//APP描述：事程规划应用
+//方便用户以日，周，月为单位归纳整理事件
+//每一个类型的时间单位有着不同的科学规划的列表栏
+//支持事件的增 删 改 撤销 恢复 清空等基础功能
+//还加入了强大的查找功能  查找处高亮  Find next 或 Find previous
+//此外还加入了模板库：用户可以按自己的习惯和喜好固定下来一套方案，比如 工作期间 或 假期
+
+//遗憾：
+//1.移动平台Ui相对简陋，
+//2.为了后续增加一些难度更大，更有挑战性的功能，预留了一些变量和函数，看起来没那么精简
+
+/*项目期间经验：
+ *1.MSVC2015不支持WebEngine， 构建时要选MSVC2017，并且要在pro文件中加入QT += webengine
+
+ * 2.运行时上一个程序未关闭会有写入问题   Qt的Bug
+
+ * 3.两个项目使用同一个构建套件 其中一个会出现Cannot retrieve debugging output
+
+ * 4.资源文件过大是要在pro文件加入CONFIG += resources_big
+ *
+ * 5.把所有图片拼接在一张图片，需要哪部分，裁剪哪部分是比较良好的方案
+ *
+ * 6.使用QJsonDocument转换，规避windows和Linux平台 不一致
+ * 例如：auto json = QJsonDocument::fromJson(data.toUtf8());auto data  = json.toJson();
+
+ */
+
 #include <QApplication>
 #include <FelgoApplication>
 
@@ -42,7 +72,7 @@ int main(int argc, char *argv[])
     // also see the .pro file for more details
     // felgo.setMainQmlFileName(QStringLiteral("qrc:/qml/Main.qml"));
 
-    //qml联动C++
+    //C++注册到Qml
     qmlRegisterType<FileIO>("Tools", 1, 0, "FileIO");
     qmlRegisterType<FileInfo>("Tools", 1, 0, "FileInfo");
     qmlRegisterType<OperationRecorder>("Tools", 1, 0, "OperationRecorder");

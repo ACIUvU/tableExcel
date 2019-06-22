@@ -13,7 +13,7 @@ Item {
     id: root
     anchors.fill: parent
 
-    //表格的表头
+    //表格的头部
     property var headerModel: [];
     onHeaderModelChanged: {
         tableView.loadHeader();
@@ -44,13 +44,12 @@ Item {
 
     //表格的数据
     property ListModel dataModel;
-    //用来标识是状态帧还是下行帧: "today" / "month" / "week"
     //用来标识是今日还是本周或者当月: "today" / "month" / "week"
     property string tableType: ""
 
-    //下行帧需要用到状态帧的name
+    //标签选项
     property var signalNames: ["个人","学校","公司","团队","购物","娱乐"]
-    // 固定名称
+
     property var fixedNames : [""]
     property int undoCount: recorder.undoCount
     property int redoCount: recorder.redoCount
@@ -112,16 +111,8 @@ Item {
     }
 
     function checkWithoutShowInfo() {
-        //var err1 = tableView.checkBitLength();
         var err2 = "";
-        /*
-        if (root.tableType === "week") {
-            err2 = tableView.checkSpecialSignals();
-        } else {
-        */
-            err2 = tableView.checkNames();
-        //}
-        //return err1 + err2;
+        err2 = tableView.checkNames();
         return err2;
     }
 
@@ -251,41 +242,8 @@ Item {
         Loader {
             id: itemLoader
             anchors.fill: parent
-//            anchors.topMargin: 1
-//            anchors.bottomMargin: 1
             visible: status === Loader.Ready
-            //根据role加载相应的组件
-            /*
-            sourceComponent: {
-                var role = styleData.role;
-                if (role === "order")
-                    return orderComponent;
-                if (role === "name")
-                    return thingComponent;
-                //
-                else if(role === "self")
-                    return myself;
-                else if (role === "bits")
-                    return priorityComponent;
-                else if (role === "coefficient")
-                    return coeffComponent;
-                else if (role === "offset")
-                    return offsetComponent;
-                else if (role === "invalid")
-                    return invalidComponent;
-                else if (role === "description")
-                    return descriptionComponent;
-                else if (role === "default" || role === "maintain")
-                    return defaultComponent;
-                else if (role === "min")
-                    return minComponent;
-                else if (role === "max")
-                    return maxComponent;
-                else if (role === "type")
-                    return typeComponent;
-                else return emptyComponent;
-            }
-            */
+            //加载表格栏
             sourceComponent: {
                 var role = styleData.role;
 
@@ -294,17 +252,8 @@ Item {
 
                 if (role === "事件")
                     return thingComponent;
-                //
-                //else if(role === "self")
-                //    return myself;
                 else if (role === "优先级")
                     return priorityComponent;
-                //else if (role === "coefficient")
-                //    return coeffComponent;
-                //else if (role === "offset")
-                //    return offsetComponent;
-                //else if (role === "invalid")
-                //    return invalidComponent;
                 else if (role === "description")
                     return descriptionComponent;
                 //标签
@@ -314,13 +263,10 @@ Item {
                     return minComponent;
                 else if (role === "结束日期")
                     return maxComponent;
-                //else if (role === "type")
-                //    return typeComponent;
                 else return emptyComponent;
             }
 
-            //Note: 各种component需要写在loader内部。因为要访问styleData，在外部会
-            //提示找不到styleData
+            //Note: 各种component需要写在loader内部。因为要访问styleData，在外部会提示找不到styleData
             Component {
                 id: emptyComponent
                 Item { }
@@ -341,12 +287,7 @@ Item {
                     Text {
                         id: orderText
                         anchors.fill: parent
-                        //                        text: styleData.value ? String(styleData.value) : ""
                         text: {
-                            //var obj = dataModel.get(styleData.row);
-                            //if (obj && obj["order"])
-                                //return obj["order"]
-                            //return ""
                             return styleData.row+1
                         }
                         color: parent.isSelected ? "white" : "#1c1d1f"
@@ -366,25 +307,6 @@ Item {
                     }
                 }
             }
-            //
-
-            /*
-            Component {
-                id: myself
-                Rectangle {
-                    anchors.fill: parent
-                    border.width: 1
-                    border.color: "#7f838c"
-                    TextInput {
-                        id: myselfTextInput
-                        anchors.fill: parent
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                        }
-                    }
-                }
-            */
-
             Component {
                 id: thingComponent
                 Rectangle {
@@ -402,14 +324,6 @@ Item {
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
 
-                        /*
-                        text: {
-                            var obj = dataModel.get(styleData.row);
-                            if (obj && obj[styleData.role])
-                                return obj[styleData.role]
-                            return ""
-                        }
-                        */
                         text: {
                             var obj = dataModel.get(styleData.row);
                             if (obj && obj["事件"])
@@ -423,24 +337,6 @@ Item {
                         selectedTextColor: "#ffffff"
                         color: parent.isSelected ? (isFixedName ? "red" : "#ededed") : "#272727"
                         property bool isUserClicked: false
-                        /*
-                        property bool isFixedName: {
-                            if (!styleData.value || styleData.value === "")
-                                return false;
-                            var isFixedName = false;
-                            for (var i = 0; i < root.fixedNames.length; ++i) {
-                                if (fixedNames[i] === styleData.value) {
-                                    isFixedName = true;
-                                }
-                            }
-                            return isFixedName;
-                        }
-                        */
-                        //  只能输入数字和英文字母,且第一个字符必须是小写英文字母
-                        //                        validator:RegExpValidator {
-                        //                            regExp: /[a-z][0-9a-zA-Z_]|^\\s*$*/
-                        //                        }
-
                         onDisplayTextChanged: {
                             if (isUserClicked) root.dataEdited();
                         }
@@ -509,17 +405,16 @@ Item {
                         anchors.margins: 1
                         boxShow: parent.isSelected
                         property var modelValue : styleData.value
-                        //bits一列要求修改完,没有按Enter或者Return就作出响应。
-                        //这里不能用binding value的方式(会造成Binding  loop)，而是改用这种特殊的方式
                         property bool isUserClicked: false
                         onModelValueChanged: {
                             if (modelValue) {
                                 value = parseInt(modelValue)
                             }
                         }
+                        //小数，最小值，最大值
                         decimals: 0
                         from: 1
-                        to: 32
+                        to: 10
                         onDisplayTextChanged: {
                             if (isUserClicked) root.dataEdited();
                         }
@@ -549,333 +444,7 @@ Item {
                 }
             }
 
-            /*
-            Component {
-                id: coeffComponent
-                Rectangle {
-                    anchors.fill: parent
-                    border.width: 1
-                    border.color: "#7f838c"
-
-                    property bool isSelected: tableView.currentColumn === styleData.column &&
-                                              tableView.currentRow === styleData.row
-                    color: isSelected ? cellSelectedColor :
-                                        ((tableView.currentRow === styleData.row) ?
-                                             cellCurrentRowColor : cellBackgroundColor)
-                    TextInput {
-                        id: coeffTextInput
-                        anchors.fill: parent
-                        text: {
-                            var obj = dataModel.get(styleData.row);
-                            if (obj && (obj[styleData.role] !== null) && (obj[styleData.role] !== "") && (obj[styleData.role] !== undefined))
-                                return parseFloat(obj[styleData.role])
-                            return ""
-                        }
-                        activeFocusOnPress: true
-                        selectByMouse: true
-                        selectionColor: "#4283aa"
-                        selectedTextColor: "#ffffff"
-                        color: parent.isSelected ? "#ededed" : "#272727"
-                        verticalAlignment: TextInput.AlignVCenter
-                        horizontalAlignment: TextInput.AlignHCenter
-                        property bool isUserClicked: false
-
-                        onDisplayTextChanged: {
-                            if (isUserClicked) root.dataEdited();
-                        }
-                        onEditingFinished: {
-                            if (styleData.row >= 0 && styleData.value !== displayText) {
-                                tableView.recordModifyData(styleData.row, styleData.role, styleData.value, parseFloat(displayText))
-                                dataModel.setProperty(styleData.row, styleData.role, parseFloat(displayText));
-                                tableView.updateDatas();
-                            }
-                        }
-                        MouseArea {
-                            anchors.fill: parent
-                            hoverEnabled: true
-                            onContainsMouseChanged: {
-                                if (containsMouse) {
-                                    cursorShape = Qt.IBeamCursor;
-                                } else {
-                                    cursorShape = Qt.ArrowCursor;
-                                }
-                            }
-                            onClicked: {
-                                mouse.accepted = false;
-                            }
-                            onDoubleClicked: { mouse.accepted = false; }
-                            onPressAndHold: {
-                                mouse.accepted = false;
-                            }
-                            onPositionChanged: {
-                                mouse.accepted = false;
-                            }
-                            onPressed: {
-                                if (pressed) {
-                                    coeffTextInput.isUserClicked = true;
-                                    tableView.currentColumn = styleData.column;
-                                    parent.forceActiveFocus();
-                                }
-                                mouse.accepted = false;
-                            }
-                            onReleased: { mouse.accepted = false; }
-                        }
-                    }
-                }
-            }
-
-
-
-            Component {
-                id: offsetComponent
-                Rectangle {
-                    anchors.fill: parent
-                    border.width: 1
-                    border.color: "#7f838c"
-                    property bool isSelected: tableView.currentColumn === styleData.column &&
-                                              tableView.currentRow === styleData.row
-                    color: isSelected ? cellSelectedColor :
-                                        ((tableView.currentRow === styleData.row) ?
-                                             cellCurrentRowColor : cellBackgroundColor)
-                    TextInput {
-                        id: offsetInput
-                        anchors.fill: parent
-                        text: {
-                            var obj = dataModel.get(styleData.row);
-                            if (obj && (obj[styleData.role] !== null) && (obj[styleData.role] !== "") && (obj[styleData.role] !== undefined))
-                                return parseFloat(obj[styleData.role])
-                            return ""
-                        }
-                        activeFocusOnPress: true
-                        selectByMouse: true
-                        selectionColor: "#4283aa"
-                        selectedTextColor: "#ffffff"
-                        color: parent.isSelected ? "#ededed" : "#272727"
-                        verticalAlignment: TextInput.AlignVCenter
-                        horizontalAlignment: TextInput.AlignHCenter
-                        property bool isUserClicked: false
-
-                        onDisplayTextChanged: {
-                            if (isUserClicked) root.dataEdited();
-                        }
-                        onEditingFinished: {
-                            if (styleData.row >= 0 && styleData.value !== displayText) {
-                                tableView.recordModifyData(styleData.row, styleData.role, styleData.value, parseFloat(displayText))
-                                dataModel.setProperty(styleData.row, styleData.role, parseFloat(displayText));
-                                tableView.updateDatas();
-                            }
-                        }
-                        MouseArea {
-                            anchors.fill: parent
-                            hoverEnabled: true
-                            onContainsMouseChanged: {
-                                if (containsMouse) {
-                                    cursorShape = Qt.IBeamCursor;
-                                } else {
-                                    cursorShape = Qt.ArrowCursor;
-                                }
-                            }
-                            onClicked: {
-                                mouse.accepted = false;
-                            }
-                            onDoubleClicked: { mouse.accepted = false; }
-                            onPressAndHold: {
-                                mouse.accepted = false;
-                            }
-                            onPositionChanged: {
-                                mouse.accepted = false;
-                            }
-                            onPressed: {
-                                if (pressed) {
-                                    offsetInput.isUserClicked = true;
-                                    tableView.currentColumn = styleData.column;
-                                    parent.forceActiveFocus();
-                                }
-                                mouse.accepted = false;
-                            }
-                            onReleased: { mouse.accepted = false; }
-                        }
-                    }
-                }
-            }
-            Component {
-                id: invalidComponent
-                Rectangle {
-                    anchors.fill: parent
-                    border.width: 1
-                    border.color: "#7f838c"
-                    z: 3
-                    property bool isSelected: tableView.currentColumn === styleData.column &&
-                                              tableView.currentRow === styleData.row
-                    color: isSelected ? cellSelectedColor :
-                                        ((tableView.currentRow === styleData.row) ?
-                                             cellCurrentRowColor : cellBackgroundColor)
-                    TextInput {
-                        id: invalidInput
-                        anchors.fill: parent
-                        anchors.leftMargin: 3
-                        //                        text: styleData.value ? styleData.value : ""
-                        text: {
-                            var obj = dataModel.get(styleData.row);
-                            if (obj && obj["invalid"])
-                                return stringToHex(obj["invalid"])
-                            return ""
-                        }
-                        activeFocusOnPress: true
-                        selectByMouse: true
-                        selectionColor: "#4283aa"
-                        selectedTextColor: "#ffffff"
-                        color: parent.isSelected ? "#ededed" : "#272727"
-                        verticalAlignment: TextInput.AlignVCenter
-                        property bool isUserClicked: false
-                        validator:RegExpValidator {
-                            regExp: /(0[xX])([0-9a-fA-F]+)(,(0[xX])([0-9a-fA-F]+))*/
-                        /*
-                        }
-
-                        onDisplayTextChanged: {
-                            if (isUserClicked) root.dataEdited();
-                        }
-                        onEditingFinished: {
-                            if (styleData.row >= 0 && styleData.value !== stringToHex(displayText)) {
-                                tableView.recordModifyData(styleData.row, styleData.role, styleData.value, stringToHex(displayText))
-                                dataModel.setProperty(styleData.row, styleData.role, stringToHex(displayText))
-                                tableView.updateDatas();
-                            }
-                        }
-                        function stringToHex(str) {
-                            var ret = "";
-                            var list = String(str).split(',');
-                            for (var i = 0; i < list.length; ++i) {
-                                var s = list[i]
-                                if (i === 0) {
-                                    ret += "0x" + parseInt(s).toString(16)
-                                } else {
-                                    ret += ",0x" + parseInt(s).toString(16)
-                                }
-                            }
-                            return ret;
-                        }
-                        MToolTip {
-                            text: "无效值必须使用十六进制，如果有多个，用逗号隔开"
-                            visible: invalidMouseArea.containsMouse
-                            delay: 500
-                        }
-                        MouseArea {
-                            id: invalidMouseArea
-                            anchors.fill: parent
-                            hoverEnabled: true
-                            onContainsMouseChanged: {
-                                if (containsMouse) {
-                                    cursorShape = Qt.IBeamCursor;
-                                } else {
-                                    cursorShape = Qt.ArrowCursor;
-                                }
-                            }
-                            onClicked: {
-                                mouse.accepted = false;
-                            }
-                            onDoubleClicked: { mouse.accepted = false; }
-                            onPressAndHold: {
-                                mouse.accepted = false;
-                            }
-                            onPositionChanged: {
-                                mouse.accepted = false;
-                            }
-                            onPressed: {
-                                if (pressed) {
-                                    invalidInput.isUserClicked = true;
-                                    tableView.currentColumn = styleData.column;
-                                    parent.forceActiveFocus();
-                                }
-                                mouse.accepted = false;
-                            }
-                            onReleased: { mouse.accepted = false; }
-                        }
-                    }
-                }
-            }
-            Component {
-                id: typeComponent
-                Rectangle {
-                    anchors.fill: parent
-                    border.width: 1
-                    border.color: "#7f838c"
-                    property bool isSelected: tableView.currentColumn === styleData.column &&
-                                              tableView.currentRow === styleData.row
-                    color: isSelected ? cellSelectedColor :
-                                        ((tableView.currentRow === styleData.row) ?
-                                             cellCurrentRowColor : cellBackgroundColor)
-                    TextInput {
-                        id: typeInput
-                        anchors.fill: parent
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                        //                        text: (styleData.value !== undefined && styleData.value !== null) ? styleData.value : ""
-                        text: {
-                            var obj = dataModel.get(styleData.row);
-                            if (obj && obj[styleData.role])
-                                return parseInt(obj[styleData.role])
-                            return ""
-                        }
-                        activeFocusOnPress: true
-                        selectByMouse: true
-                        selectionColor: "#4283aa"
-                        selectedTextColor: "#ffffff"
-                        color: parent.isSelected ? "#ededed" : "#272727"
-                        property bool isUserClicked: false
-                        //只能输入数字
-                        validator:RegExpValidator {
-                            regExp: /[0-9]*/
-                        /*
-                        }
-                        //  编辑完成时，将displayText写入model
-                        onDisplayTextChanged: {
-                            if (isUserClicked) root.dataEdited();
-                        }
-                        onEditingFinished: {
-                            if (styleData.row >= 0 && styleData.value !== parseInt(text)) {
-                                tableView.recordModifyData(styleData.row, styleData.role, styleData.value, parseInt(text))
-                                dataModel.setProperty(styleData.row, styleData.role, parseInt(text));
-                                tableView.updateDatas();
-                            }
-                        }
-
-                        MouseArea {
-                            anchors.fill: parent
-                            hoverEnabled: true
-                            onContainsMouseChanged: {
-                                if (containsMouse) {
-                                    cursorShape = Qt.IBeamCursor;
-                                } else {
-                                    cursorShape = Qt.ArrowCursor;
-                                }
-                            }
-                            onClicked: {
-                                mouse.accepted = false;
-                            }
-                            onDoubleClicked: { mouse.accepted = false; }
-                            onPressAndHold: {
-                                mouse.accepted = false;
-                            }
-                            onPositionChanged: {
-                                mouse.accepted = false;
-                            }
-                            onPressed: {
-                                if (pressed) {
-                                    typeInput.isUserClicked = true;
-                                    tableView.currentColumn = styleData.column;
-                                    parent.forceActiveFocus();
-                                }
-                                mouse.accepted = false;
-                            }
-                            onReleased: { mouse.accepted = false; }
-                        }
-                    }
-                }
-            }
-            */
-
+            //起始日期
             Component {
                 id: minComponent
                 Rectangle {
@@ -901,39 +470,16 @@ Item {
                                 return obj[styleData.role]
                             return ""
                         }
-                        /*
-                        text: {
-                            var obj = dataModel.get(styleData.row);
-                            if (obj && obj[styleData.role])
-                                return obj[styleData.role]
-                            return ""
-                        }
-                        */
                         activeFocusOnPress: true
                         selectByMouse: true
                         selectionColor: "#4283aa"
                         selectedTextColor: "#ffffff"
                         color: parent.isSelected ? "#ededed" : "#272727"
                         property bool isUserClicked: false
-                        //只能输入数字、负号和小数点
-                        //validator:RegExpValidator {
-                        //    regExp: /-?[0-9]*.?[0-9]*/
-                        //}
-                        //  编辑完成时，将displayText写入model
+                        //编辑完成时，将displayText写入model
                         onDisplayTextChanged: {
                             if (isUserClicked) root.dataEdited();
                         }
-                        /*
-                        onEditingFinished: {
-                            if (styleData.row >= 0 && styleData.value !== parseFloat(text)) {
-                                tableView.recordModifyData(styleData.row, styleData.role, styleData.value,
-                                                           (text === null || text === undefined || text === "") ? "" : parseFloat(text));
-                                dataModel.setProperty(styleData.row, styleData.role,
-                                                      (text === null || text === undefined || text === "") ? "" : parseFloat(text));
-                                tableView.updateDatas();
-                            }
-                        }
-                        */
                         onEditingFinished: {
                             if (styleData.row >= 0 && styleData.value !== text) {
                                 tableView.recordModifyData(styleData.row, styleData.role, styleData.value, text);
@@ -991,15 +537,6 @@ Item {
                         anchors.fill: parent
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
-                        //                        text: (styleData.value !== undefined && styleData.value !== null) ? styleData.value : ""
-                        /*
-                        text: {
-                            var obj = dataModel.get(styleData.row);
-                            if (obj && (obj[styleData.role] !== null) && (obj[styleData.role] !== "") && (obj[styleData.role] !== undefined))
-                                return parseFloat(obj[styleData.role])
-                            return ""
-                        }
-                        */
                         text: {
                             var obj = dataModel.get(styleData.row);
                             if (obj && (obj[styleData.role] !== null) && (obj[styleData.role] !== "") && (obj[styleData.role] !== undefined))
@@ -1015,24 +552,9 @@ Item {
                         selectedTextColor: "#ffffff"
                         color: parent.isSelected ? "#ededed" : "#272727"
                         property bool isUserClicked: false
-                        //只能输入数字、负号和小数点
-                        //validator:RegExpValidator {
-                         //   regExp: /-?[0-9]*.?[0-9]*/
-                        //}
                         onDisplayTextChanged: {
                             if (isUserClicked) root.dataEdited();
                         }
-                        /*
-                        onEditingFinished: {
-                            if (styleData.row >= 0 && styleData.value !== parseFloat(text)) {
-                                tableView.recordModifyData(styleData.row, styleData.role, styleData.value,
-                                                           (text === null || text === undefined || text === "") ? "" : parseFloat(text))
-                                dataModel.setProperty(styleData.row, styleData.role,
-                                                      (text === null || text === undefined || text === "") ? "" : parseFloat(text));
-                                tableView.updateDatas();
-                            }
-                        }
-                        */
                         onEditingFinished: {
                             if (styleData.row >= 0 && styleData.value !== text) {
                                 tableView.recordModifyData(styleData.row, styleData.role, styleData.value, text);
@@ -1149,16 +671,6 @@ Item {
                     property bool isSelected: tableView.currentColumn === styleData.column &&
                                               tableView.currentRow === styleData.row
                     property alias isMaintain: defaultCheckBox.checked
-                    /*
-                    onIsMaintainChanged: {
-                        //取消勾选时，将maintain置空
-                        if (!isMaintain) {
-                            defaultComboBox.currentIndex = 0
-                        } else {
-
-                        }
-                    }
-                    */
                     CheckBox {
                         id: defaultCheckBox
 
@@ -1198,19 +710,6 @@ Item {
                             }
                             return false;
                         }
-                        //                        property string modelValue: {
-                        //                            var obj = dataModel.get(styleData.row)
-                        //                            if (obj && obj["maintain"])
-                        //                                return obj["maintain"];
-                        //                            return "";
-                        //                        }
-                        //                        onModelValueChanged: {
-                        //                            if (modelValue && modelValue != "") {
-                        //                                checked = true;
-                        //                            } else {
-                        //                                checked = false;
-                        //                            }
-                        //                        }
                         onCheckedChanged: {
                             tableView.currentColumn = styleData.column;
                             parent.forceActiveFocus();
@@ -1295,14 +794,6 @@ Item {
                         anchors.topMargin: 1
                         anchors.bottomMargin: 1
                         visible: !parent.isMaintain
-                        /*
-                        text : {
-                            var obj = dataModel.get(styleData.row);
-                            if (obj && (obj[styleData.role] !== null) && (obj[styleData.role] !== "") && (obj[styleData.role] !== undefined))
-                                return parseFloat(obj[styleData.role])
-                            return ""
-                        }
-                        */
                         text: {
                             var obj = dataModel.get(styleData.row);
                             if (obj && obj[styleData.role])
@@ -1316,29 +807,7 @@ Item {
                         color: parent.isSelected ? "#ededed" : "#272727"
                         horizontalAlignment: TextInput.AlignHCenter
                         verticalAlignment: TextInput.AlignVCenter
-                        property bool isUserClicked: false
-
-                        /*
-                        //只能输入数字、负号和小数点
-                        validator:RegExpValidator {
-                            regExp: /-?[0-9]*.?[0-9]*/
-
-                        //}
-                        /*
-                        onDisplayTextChanged: {
-                            if (isUserClicked) root.dataEdited();
-                        }
-
-                        onEditingFinished: {
-                            if (styleData.row >= 0 && styleData.value !== parseFloat(text)) {
-                                tableView.recordModifyData(styleData.row, styleData.role, styleData.value,
-                                                           (text === null || text === undefined || text === "") ? "" : parseFloat(text));
-                                dataModel.setProperty(styleData.row, styleData.role,
-                                                      (text === null || text === undefined || text === "") ? "" : parseFloat(text));
-                                tableView.updateDatas();
-                            }
-                        }
-                        */
+                        property bool isUserClicked: false                        
                         onEditingFinished: {
                             if (styleData.row >= 0 && styleData.value !== text) {
                                 tableView.recordModifyData(styleData.row, styleData.role, styleData.value, text ? text : "")
@@ -1395,7 +864,7 @@ Item {
         //点击过cell后，记录cell的column
         property int currentColumn: -1
 
-        //各种delegate
+        //头，中，下的delegate
         headerDelegate: headerDelegate
         rowDelegate: rowDelegate
         itemDelegate: itemDelegate
@@ -1414,14 +883,12 @@ Item {
             }
             updateDatas();
 
-//            if (root.tableType !== "week") {
                 //添加一列 字节号, json文件中没有
                 var orderTab = columnComponent.createObject(tableView)
                 orderTab.title = qsTr("序号")
                 orderTab.role = "order"
                 orderTab.width = 50
                 tableView.addColumn(orderTab)
-//            }
 
             for (var i = 0; i < headerModel.length; ++i) {
                 var tab = columnComponent.createObject(tableView)
@@ -1448,11 +915,7 @@ Item {
                 }
             //}
         }
-        /*
-        readonly property var thisdayRow : {"name": "", "bits": 1, "coefficient": 1, "offset": 0, "invalid": "", "description": ""}
-        readonly property var thismweekRow : {"name": "", "bits": 1, "default": 0, "description": ""}
-        readonly property var thismonthRow : {"name": "", "type": 0,"self":""}
-        */
+
         readonly property var thisdayRow : {"事件": "","优先级":"1","标签":0,"description": ""}
         readonly property var thismweekRow : {"事件": "","优先级":"1", "日期": 1, "description": ""}
         readonly property var thismonthRow : {"事件": "","优先级":"1", "日期": 1, "结束日期": 1, "description": ""}
@@ -1591,59 +1054,8 @@ Item {
             recorder.record(JSON.stringify(recordObj));
         }
 
-        /*
-        function checkBits() {
-            var bytes = 1;
-            var bits = 0;
-            for (var i = 0; i < dataModel.count; ++i) {
-                var obj = dataModel.get(i);
-                if (obj && obj["bits"]) {
-                    var currentBits = obj["bits"];
-                    if (!currentBits || currentBits <= 0) {
-                        var info = "非法字节提示:<br>  " + "thing(" + obj["thing"] + ") 序号(" + bytes + ") <br><br>";
-                        return info;
-                    }
-                    var __bits = bits + currentBits
-                    if (__bits > 8) {
-                        if (__bits % 8 != 0) {
-                            var info = "跨字节提示:<br>  " + "thing(" + obj["thing"] + ") 序号(" + bytes + ") <br><br>";
-                            return info;
-                        }
-                    }
-                    bits += currentBits;
-                    bytes += parseInt(bits / 8);
-                    bits %= 8;
-                }
-            }
-            return "";
-        }
-
-
-        function checkBitLength() {
-            var info = "";
-            var bits = 0;
-            for (var i = 0; i < dataModel.count; ++i) {
-                var obj = dataModel.get(i);
-                if (obj && obj["bits"]) {
-                    var currentBits = obj["bits"];
-                    if (!currentBits || currentBits <= 0) {
-                        info = "非法字节提示:<br>  " + "thing(" + obj["thing"] + ") 序号(" + bytes + ") <br><br>";
-                        return info;
-                    }
-                    bits += currentBits;
-                }
-            }
-            if ((bits % 8) != 0) {
-                info = "总长度不是整字节<br>";
-                return info;
-            }
-            return info;
-        }
-        */
-
         function checkNames() {
             var info = "";
-
             //检查 名字冲突
             var names = [];
             for (var i = 0; i < dataModel.count; ++i) {
@@ -1658,20 +1070,6 @@ Item {
                     }
                 }
             }
-
-            /*
-            var array = root.fixedNames;
-            //外部传进来的Array，在第二次check的时候，会莫名其妙变成空的，这里先用固定的Array
-            if (root.tableType === "today") {
-                array = [ "rpm", "igOn", "theme", "language", "dateTime",
-                         "enterKey", "backKey", "nextKey", "prevKey", "speed",
-                         "hwVersionMax", "hwVersionMid", "hwVersionMin",
-                         "mcuVersionMax", "mcuVersionMid", "mcuVersionMin", "projectModeEnabled"
-                        ];
-            } else if (root.tableType === "month") {
-                array = ["cationState"];
-            }
-            */
             var array = root.fixedNames;
             //检查 固定名称
             if (array.length > 0) {
@@ -1699,39 +1097,7 @@ Item {
             return info;
         }
 
-
-        /*
-        function checkSpecialSignals() {
-            var types = [];
-            var names = [];
-            for (var i = 0; i < dataModel.count; ++i) {
-                var obj = dataModel.get(i);
-                if (obj) {
-                    var type = obj["type"];
-                    var name = obj["name"];
-                    if (!type) {
-                        return "事件编号为0或为空";
-                    } else {
-                        if (types.indexOf(type) >= 0) {
-                            return "事件编号 " + type + " 冲突";
-                        } else {
-                            types.push(type);
-                        }
-                    }
-                    if (!name) {
-                        return "事件编号" + type +", name为空";
-                    } else {
-                        if (names.indexOf(name) >= 0) {
-                            return "name冲突:" + name ;
-                        } else {
-                            names.push(name);
-                        }
-                    }
-                }
-            }
-            return ""
-        }
-        */
+        //查找
         function find(text) {
             var result = []
             var key = text.toLowerCase();

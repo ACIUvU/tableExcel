@@ -25,160 +25,7 @@ App {
                 height: parent.height
                 property string sourceFileName: ""
 
-                //放到最后去
-                //连接对象创建到QML信号的连接
-
-                /*
-                Connections {
-                    target:tableStatus
-                    //tableStatus.onSourceJsonFilePathChanged:
-
-                    onSourceJsonFilePathChanged: {
-                        if (sourceJsonFilePath) {
-                            //先置空，再赋值，保证能多次加载同一个文件
-                            root.sourceFileName = ""
-                            root.sourceFileName = sourceJsonFilePath;
-                        }
-                    }
-                }
-                */
-
-
-                //左上角
-                /*
-                Row {
-                    anchors.left: parent.left
-                    anchors.leftMargin: 10
-                    anchors.top: parent.top
-                    anchors.topMargin: 20
-                    spacing: 5
-                    Label {
-                        id: mcuVersionLabel
-                        anchors.verticalCenter: parent.verticalCenter
-                        text: qsTr("Mcu版本")
-                        color: "#272727"
-                    }
-
-                    TextField {
-                        id: mcuVersionText
-                        anchors.verticalCenter: parent.verticalCenter
-
-                        selectByMouse: true
-                        background: Rectangle {
-                            implicitWidth: 100
-                            height: 26
-                            radius: 4
-                            color: "transparent"
-                            border.color: mcuVersionArea.containsMouse ? "#0099cc" : "#b8b9ba"
-                        }
-                        //验证器
-                        validator:RegExpValidator {
-                            regExp: /[0-9a-zA-Z.]*/
-    /*
-                        }
-                        onDisplayTextChanged: {
-                            jsonListModel.mcuVersion = text
-                            if (isInited)
-                                tableStatus.hasSaved = false;
-                        }
-                        property bool isInited: false
-                        MouseArea {
-                            id: mcuVersionArea
-                            anchors.fill: parent
-                            hoverEnabled: true
-                            onContainsMouseChanged: {
-                                if (containsMouse) {
-                                    cursorShape = Qt.IBeamCursor;
-                                } else {
-                                    cursorShape = Qt.ArrowCursor;
-                                }
-                            }
-                            onClicked: {
-                                mouse.accepted = false;
-                            }
-                            onDoubleClicked: { mouse.accepted = false; }
-                            onPressAndHold: {
-                                mouse.accepted = false;
-                            }
-                            onPositionChanged: {
-                                mouse.accepted = false;
-                            }
-                            onPressed: {
-                                mouse.accepted = false;
-                            }
-                            onReleased: { mouse.accepted = false; }
-                        }
-                    }
-                    Item {
-                        height: parent.height
-                        width: 20
-                    }
-                    Label {
-                        id: heartBeatIntervalLabel
-                        anchors.verticalCenter: parent.verticalCenter
-                        text: qsTr("心跳帧频率")
-                        color: "#272727"
-                    }
-                    TextField {
-                        id: heartBeatIntervalText
-                        anchors.verticalCenter: parent.verticalCenter
-                        selectByMouse: true
-                        validator:RegExpValidator {
-                            regExp: /[0-9]*/
-/*
-                        }
-                        property bool isInited: false
-                        onDisplayTextChanged: {
-                            if (!text || parseInt(text) === 0)
-                                text = "1000"
-                            jsonListModel.heartBeatInterval = parseInt(text)
-                            if (isInited)
-                                tableStatus.hasSaved = false;
-                        }
-                        background: Rectangle {
-                            implicitWidth: 100
-                            height: 26
-                            radius: 4
-                            color: "transparent"
-                            border.color: heartBeatIntervalArea.containsMouse ? "#0099cc" : "#b8b9ba"
-                        }
-                        MouseArea {
-                            id: heartBeatIntervalArea
-                            anchors.fill: parent
-                            hoverEnabled: true
-                            onContainsMouseChanged: {
-                                if (containsMouse) {
-                                    cursorShape = Qt.IBeamCursor;
-                                } else {
-                                    cursorShape = Qt.ArrowCursor;
-                                }
-                            }
-                            onClicked: {
-                                mouse.accepted = false;
-                            }
-                            onDoubleClicked: { mouse.accepted = false; }
-                            onPressAndHold: {
-                                mouse.accepted = false;
-                            }
-                            onPositionChanged: {
-                                mouse.accepted = false;
-                            }
-                            onPressed: {
-                                mouse.accepted = false;
-                            }
-                            onReleased: { mouse.accepted = false; }
-                        }
-                    }
-                    Label {
-                        anchors.verticalCenter: parent.verticalCenter
-                        text: qsTr("ms")
-                        color: "#272727"
-                    }
-                }
-*/
-
                 //左下角
-                //FMHoverButton名字该改一改
                 Row {
 
                     anchors.left: parent.left
@@ -193,7 +40,7 @@ App {
                         frontImageSource: "qrc:/Image/Project/importBlue.png"
                         onClicked: {
                             forceActiveFocus();
-                            mcuJsonfileDialog.openFile()
+                            thingJsonfileDialog.openFile()
                         }
                     }
 
@@ -220,64 +67,11 @@ App {
                         frontImageSource: "qrc:/Image/Project/saveasBlue.png"
                         onClicked: {
                             forceActiveFocus();
-                            /*
-                            var err = tabRect.checkData();
-                            if (err) {
-                                root.showMessageBox(err)
-                            } else {
-                            */
-                                root.saveAs();
-                            //}
+                            root.saveAs();
                         }
                     }
-/*
-                    CheckBox {
-                        id: indentCheckBox
-                        anchors.verticalCenter: parent.verticalCenter
-                        text: qsTr("Indented格式")
 
-                        onCheckStateChanged: {
-                            tableStatus.saveWithIndented = (indentCheckBox.checkState == Qt.Checked)
-                        }
-                        Component.onCompleted: checked = tableStatus.saveWithIndented
-                        indicator: Rectangle {
-                            id: indicRect
-                            implicitWidth: 22
-                            implicitHeight: 22
-                            radius: 3
-                            anchors {
-                                verticalCenter: indentCheckBox.verticalCenter
-                                left: indentCheckBox.left
-                                leftMargin: 5
-                            }
-                            color: "transparent"
-                            border.width: 1.2
-                            border.color: "#363636"
-                            Rectangle {
-                                width: 10
-                                height: 10
-                                anchors.centerIn: parent
-                                color: "#FF5933"
-                                visible: indentCheckBox.checked
-                            }
-                        }
-                        contentItem: Text {
-                            anchors.left: indicRect.right
-                            anchors.leftMargin: 4
-                            text: indentCheckBox.text
-                            font: indentCheckBox.font
-                            color: "#272727"
-                            horizontalAlignment: Text.AlignHCenter
-                            verticalAlignment: Text.AlignVCenter
-                        }
-                    }
-*/
-                    /*
-                    Item {
-                        height: parent.height
-                        width: 50
-                    }
-                    */
+                    //底部中间
                     Item {
                         height: parent.height
                         width: currentFileText.width + 10
@@ -294,6 +88,7 @@ App {
                         }
                     }
                 }
+                //右下角
                 Row {
                     anchors {
                         bottom: parent.bottom
@@ -356,16 +151,7 @@ App {
                                 color: "white"
                             }
                         }
-                    }
-                    //        FMHoverButton {
-                    //            tipText: qsTr("上方添加一行")
-                    //            backImageSource: "qrc:/Image/Table/insert-rowG.png"
-                    //            frontImageSource: "qrc:/Image/Table/insert-rowB.png"
-                    //            onClicked: {
-                    //                tabRect.addRowsAbove(1);
-                    //                tableStatus.hasSaved = false;
-                    //            }
-                    //        }
+                    }                 
                     MHoverButton {
                         tipText: qsTr("下方添加一行")
                         anchors.verticalCenter: parent.verticalCenter
@@ -418,7 +204,7 @@ App {
                 }
 
 
-                //        文件读写
+                //文件读写
                 FileIO {
                     id: fileIO
                 }
@@ -426,6 +212,7 @@ App {
                     id: fileInfo
                 }
 
+                //左上角
                 TabBar {
                     id: columnTabBar
                     anchors.left: parent.left
@@ -438,7 +225,6 @@ App {
                     TabButton {
                         id: signalsButton
                         text: qsTr("今日安排")
-                        //text: qsTr("今日事程")
                         contentItem: Text {
                             anchors.centerIn: signalsButton
                             text: signalsButton.text
@@ -488,6 +274,7 @@ App {
                     }
                 }
 
+                //右上角
                 Row {
                     anchors {
                         right: parent.right
@@ -522,42 +309,9 @@ App {
                             root.showTemplateBox();
                         }
                     }
-                    /*
-                    MHoverButton {
-                        id: checkButton
-                        tipText: qsTr("检查")
-                        backImageSource: "qrc:/Image/Tools/checkG.png"
-                        frontImageSource: "qrc:/Image/Tools/checkR.png"
-                        isAtAbove: true
-                        onClicked: {
-                            tabRect.check();
-                        }
-                    }
-                    MHoverButton {
-                        id: timButton
-                        tipText: qsTr("提示")
-                        backImageSource: "qrc:/Image/Tools/promptG.png"
-                        frontImageSource: "qrc:/Image/Tools/promptR.png"
-                        isAtAbove: true
-                        onClicked: {
-                            var fixedName = ""
-                            for (var i = 0; i < tabRect.fixedNames.length; ++i) {
-                                if (i % 4 == 0)
-                                    fixedName += "<br>"
-                                fixedName += tabRect.fixedNames[i] + " ";
-                            }
-                            var tips = "
-                1、bits必须大于0 <br>
-                2、状态帧 必须包含以下固定名称: %1<br>
-                3、下行帧 必须包含 applicationState<br>
-                4、max表示计算后的数据， 计算方法:<br>
-                    (原始数据 × coefficient) + offset
-                ".arg(fixedName);
-                            root.showMessageBox(tips);
-                        }
-                    }
-                    */
                 }
+
+                //核心表格
                 Item {
                     id: tabRect
                     anchors {
@@ -578,25 +332,11 @@ App {
                     signal redo();
                     signal undo();
 
+                    //表格状态
                     TableStatus {
                         id: tableStatus
                     }
-
-                    /*
-                    Connections {
-                        target:tableStatus
-                        //tableStatus.onSourceJsonFilePathChanged:
-
-                        onSourceJsonFilePathChanged: {
-                            if (sourceJsonFilePath) {
-                                //先置空，再赋值，保证能多次加载同一个文件
-                                root.sourceFileName = ""
-                                root.sourceFileName = sourceJsonFilePath;
-                            }
-                        }
-                    }
-                    */
-
+                    //现在处于哪个表格
                     property alias currentIndex : columnTabBar.currentIndex
                     onCurrentIndexChanged: {
                         if (currentIndex === 0) {
@@ -625,6 +365,7 @@ App {
                         thisdayTable.visible = true;
                         connectToThisday();
                     }
+                    //链接一大堆的信号
                     function connectToThisday() {
                         tabRect.addRowsAbove.disconnect(thismonthTable.addRowsAbove)
                         tabRect.addRowsBelow.disconnect(thismonthTable.addRowsBelow)
@@ -786,31 +527,22 @@ App {
                         root.showMessageBox(info)
                     }
 
-
+                    //检查数据
                     function checkData() {
                         var err1 =  thisdayTable.checkWithoutShowInfo();
                         if (err1) {
                             return "今日安排 " + err1;
                         }
-
                         var err2 = thisweekTable.checkWithoutShowInfo();
                         if (err2) {
                             return "本周事程 " + err2;
                         }
-
                         var err3 = thismonthTable.checkWithoutShowInfo();
                         if (err3) {
                             return "当月目标" + err3
                         }
                         return "";
-                        /*
-                        if (jsonListModel.mcuVersion === "" || jsonListModel.mcuVersion === "0") {
-                            return "请输入Mcu版本";
-                        }
-                        return "";
-                        */
                     }
-
 
 
                     function clearReocrder() {
@@ -835,29 +567,20 @@ App {
                     //header数据
                     //今日安排
                     readonly property var thisdayHeaderModel: [
-                        //"name", "bits", "coefficient", "offset", "min", "max", "invalid", "description"
                         "事件", "优先级","标签","description"
                     ]
                     //本周事程
                     readonly property var thisweekHeaderModel: [
-                        //"type", "name", "description"
                         "事件","优先级", "日期","description"
                     ]
                     //当月目标
                     readonly property var thismonthHeaderModel: [
-                        //"name","bits","default","min", "max", "description"
                         "事件","优先级","日期","结束日期","description"
                     ]
                     //固定名称
-                    /*
-                    readonly property var fixedNames : [
-                        "rpm", "igOn", "theme", "language", "dateTime",
-                        "enterKey", "backKey", "nextKey", "prevKey", "speed",
-                        "hwVersionMax", "hwVersionMid", "hwVersionMin",
-                        "mcuVersionMax", "mcuVersionMid", "mcuVersionMin", "projectModeEnabled"
-                    ]
-                    */
                     readonly property var fixedNames :[]
+
+                    //繁忙指示器应该用于指示正在加载内容或UI被阻塞时的活动，以等待资源可用。
                     Rectangle {
                         id: busyRect
                         z: 3
@@ -886,13 +609,6 @@ App {
                     //data数据
                     MJsonListModel {
                         id: jsonListModel
-                        //heartBeatIntervalQuery: "$.heartBeatInterval"
-                        //mcuVersionQuery: "$.version"
-                        /*
-                        thisdayQuery: "$.signals[*]"
-                        thisweekQuery: "$.specialSignals[*]"
-                        thismonthQuery: "$.commands[*]"
-                        */
                         thisdayQuery: "$.today[*]"
                         thisweekQuery: "$.week[*]"
                         thismonthQuery: "$.month[*]"
@@ -900,8 +616,6 @@ App {
                         property string source: root.sourceFileName
                         onSourceChanged: {
                             if (source) {
-                                //heartBeatIntervalText.isInited = false
-                                //mcuVersionText.isInited = false
                                 loadFromSource(source);
                             }
                         }
@@ -917,10 +631,6 @@ App {
                         }
                         onParseEnd: {
                             tabRect.updateDatas();
-                            //mcuVersionText.text = mcuVersion
-                            //heartBeatIntervalText.text = heartBeatInterval
-                            //heartBeatIntervalText.isInited = true
-                            //mcuVersionText.isInited = true
                             busyRect.close();
                             //tableStatus.hasLoadedModel = true;
                             tableStatus.setMcuData(jsonListModel.getModelData(false));
@@ -973,6 +683,7 @@ App {
                         }
                     }
                 }
+                //模板库
                 Component {
                     id: templateWindow
                     Item {
@@ -1095,12 +806,6 @@ App {
                 }
 
                 function noProjectSave() {
-                    /*
-                    var err = tabRect.checkData();
-                    if (err) {
-                        root.showMessageBox(err)
-                    } else {
-                    */
                         if (root.sourceFileName) {
                             root.saveToJson(root.sourceFileName, false);
                         } else {
@@ -1110,23 +815,12 @@ App {
                 }
                 function projectSave() {
                     if (tableStatus.sourceJsonFilePath) {
-                        //var err = tabRect.checkData();
-                        //if (err) {
                             root.showMessageBox("操作成功")
-                         //else {
                             root.saveToJson(tableStatus.sourceJsonFilePath, false);
-                         //}
                     }
                 }
                 function saveAs() {
-                    /*
-                    var err = tabRect.checkData();
-                    if (err) {
-                        root.showMessageBox(err)
-                    } else {
-                    */
-                        mcuJsonfileDialog.saveFile();
-                    //}
+                        thingJsonfileDialog.saveFile();
                 }
                 function projectClose() {
                     thisdayTable.clear();
@@ -1134,17 +828,15 @@ App {
                     thismonthTable.clear();
                     root.sourceFileName = "";
                     tableStatus.hasSaved = true;
-                    //heartBeatIntervalText.isInited = false
-                    //mcuVersionText.isInited = false
                 }
-
 
                 function find(text) {
                     tabRect.find(text)
                 }
+
                 //加载，保存 对话框
                 FileDialog {
-                    id: mcuJsonfileDialog
+                    id: thingJsonfileDialog
                     visible: false
                     folder: shortcuts.home
                     selectFolder: false

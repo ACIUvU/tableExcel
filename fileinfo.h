@@ -1,7 +1,5 @@
 #ifndef FILEINFO_H
 #define FILEINFO_H
-//只编译一次
-//#pragma once
 
 #include <QUrl>
 #include <QDir>
@@ -15,7 +13,7 @@ class FileInfo : public QObject {
 public:
     explicit FileInfo(QObject *parent = 0);
 
-    //这些API的功能，请参考QFileInfo的文档。
+    //QFileInfo提供的相应API功能
     Q_INVOKABLE QString baseName(const QString &filePath);
     Q_INVOKABLE QString suffix(const QString &filePath);
     Q_INVOKABLE QString absoluteDir(const QString &filePath);

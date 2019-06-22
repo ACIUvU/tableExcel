@@ -1,5 +1,6 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.0
+//参考QML Popup文档
 Popup {
     id: root
     x: (parent.width - width) / 2

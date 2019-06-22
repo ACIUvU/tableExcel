@@ -1,6 +1,6 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.1
-
+//自定义组件
 SpinBox {
     id: root
     property int decimals: 0

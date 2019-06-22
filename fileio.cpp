@@ -6,6 +6,7 @@ bool FileIO::writeFile(const QString &filePath, const QString &data) {
     QFile file(filePath);
     if (file.open(QFile::WriteOnly)) {
         //这里使用QJsonDocument转换一次，规避windows和Linux平台 不一致
+        //学习其他项目的经验
         auto json = QJsonDocument::fromJson(data.toUtf8());
         auto data  = json.toJson();
 

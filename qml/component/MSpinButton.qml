@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.1
+//自定义组件
 Rectangle {
     id: root
     implicitWidth: 120
