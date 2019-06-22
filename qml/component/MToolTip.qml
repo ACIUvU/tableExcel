@@ -26,7 +26,7 @@ Item {
         id: toolTip
         contentItem: Text {
             text: toolTip.text
-            color: "#F1F4F9"
+            color: "#f5f7fa"
         }
         background: Rectangle {
             id: background

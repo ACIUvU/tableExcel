@@ -233,9 +233,12 @@ Item {
         }
     }
 
-    readonly property color cellBackgroundColor: "#EDEDF0"
-    readonly property color cellCurrentRowColor: "#C4DEF4"
-    readonly property color cellSelectedColor: "#32A6FF"
+    //偏白色
+    readonly property color cellBackgroundColor: "#e4e8ec"
+    //淡蓝色
+    readonly property color cellCurrentRowColor: "#c2ddf5"
+
+    readonly property color cellSelectedColor: "#4baffb"
     //TabelView item代理
     Component {
         id: itemDelegate
@@ -1356,14 +1359,14 @@ Item {
             }
             updateDatas();
 
-            if (root.tableType !== "week") {
+//            if (root.tableType !== "week") {
                 //添加一列 字节号, json文件中没有
                 var orderTab = columnComponent.createObject(tableView)
                 orderTab.title = qsTr("序号")
                 orderTab.role = "order"
                 orderTab.width = 100
                 tableView.addColumn(orderTab)
-            }
+//            }
 
             for (var i = 0; i < headerModel.length; ++i) {
                 var tab = columnComponent.createObject(tableView)

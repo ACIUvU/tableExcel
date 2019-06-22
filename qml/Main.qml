@@ -440,12 +440,12 @@ App {
                             text: signalsButton.text
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: Text.AlignHCenter
-                            color: signalsButton.checked ? "#30D5FD" : "#787878"    //"#d5d5d5"
+                            color: signalsButton.checked ? "#30d6fd" : "#787878"    //"#d5d5d5"
                         }
                         background: Rectangle {
                             implicitWidth: 120
                             implicitHeight: 35
-                            color: "#F1F4F9"
+                            color: "#f5f7fa"
                         }
                     }
                     TabButton {
@@ -457,12 +457,12 @@ App {
                             text: specialSignalsButton.text
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: Text.AlignHCenter
-                            color: specialSignalsButton.checked ? "#30D5FD" : "#787878"    //"#d5d5d5"
+                            color: specialSignalsButton.checked ? "#30d6fd" : "#787878"    //"#d5d5d5"
                         }
                         background: Rectangle {
                             implicitWidth: 120
                             implicitHeight: 35
-                            color: "#F1F4F9"
+                            color: "#edf1f7"
                         }
                     }
                     TabButton {
@@ -474,12 +474,12 @@ App {
                             text: commandsButton.text
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: Text.AlignHCenter
-                            color: commandsButton.checked ? "#30D5FD" : "#787878"   //"#d5d5d5"
+                            color: commandsButton.checked ? "#30d6fd" : "#787878"   //"#d5d5d5"
                         }
                         background: Rectangle {
                             implicitWidth: 120
                             implicitHeight: 35
-                            color: "#F1F4F9"
+                            color: "#edf1f7"
                         }
                     }
                 }
@@ -494,7 +494,7 @@ App {
                     spacing: 10
                     MTextButton {
                         id: findButton
-                        width: 260
+                        width: 200
                         hitText: qsTr("搜索...")
 
                         backImageSourceOne: "qrc:/Image/Tools/arrowUpGray.png"
@@ -826,17 +826,17 @@ App {
                     }
                     //header数据
                     //今日安排
-                    readonly property var signalsHeaderModel: [
+                    readonly property var thisdayHeaderModel: [
                         //"name", "bits", "coefficient", "offset", "min", "max", "invalid", "description"
                         "事件", "优先级","标签","description"
                     ]
                     //本周事程
-                    readonly property var specialSignalHeaderModel: [
+                    readonly property var thisweekHeaderModel: [
                         //"type", "name", "description"
                         "事件","优先级", "日期","description"
                     ]
                     //当月目标
-                    readonly property var commandsHeaderModel: [
+                    readonly property var thismonthHeaderModel: [
                         //"name","bits","default","min", "max", "description"
                         "事件","优先级","日期","结束日期","description"
                     ]
@@ -925,7 +925,7 @@ App {
                         id: thisdayTable
                         visible: false
                         dataModel: jsonListModel.thisday
-                        headerModel: tabRect.signalsHeaderModel
+                        headerModel: tabRect.thisdayHeaderModel
                         fixedNames: tabRect.fixedNames
                         tableType: "today"
                         onDataEdited: {
@@ -938,7 +938,7 @@ App {
                         id: thisweekTable
                         visible: false
                         dataModel: jsonListModel.thisweek
-                        headerModel: tabRect.specialSignalHeaderModel
+                        headerModel: tabRect.thisweekHeaderModel
                         fixedNames: [""]
                         tableType: "week"
                         onDataEdited: {
@@ -951,7 +951,7 @@ App {
                         id: thismonthTable
                         visible: false
                         dataModel: jsonListModel.thismonth
-                        headerModel: tabRect.commandsHeaderModel
+                        headerModel: tabRect.thismonthHeaderModel
                         fixedNames: ["applicationState"]
                         tableType: "month"
                         signalNames: tabRect.signalNames

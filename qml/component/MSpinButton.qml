@@ -10,7 +10,7 @@ Rectangle {
 
     signal trigger(int count);
     border.width: hoverButton.containMouse ? 1 : 0
-    border.color: "#00A7FF"
+    border.color: "#09a8fb"
     color: "transparent"
 
     SpinBox {
