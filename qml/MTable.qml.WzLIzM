@@ -339,7 +339,7 @@ Item {
                             //if (obj && obj["order"])
                                 //return obj["order"]
                             //return ""
-                            return styleData.row+1
+                            return dataModel.count;
                         }
                         color: parent.isSelected ? "white" : "#1c1d1f"
 

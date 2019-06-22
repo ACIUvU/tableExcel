@@ -335,11 +335,10 @@ Item {
                         anchors.fill: parent
                         //                        text: styleData.value ? String(styleData.value) : ""
                         text: {
-                            //var obj = dataModel.get(styleData.row);
-                            //if (obj && obj["order"])
-                                //return obj["order"]
-                            //return ""
-                            return styleData.row+1
+                            var obj = dataModel.get(styleData.row);
+                            if (obj && obj["order"])
+                                return obj["order"]
+                            return ""
                         }
                         color: parent.isSelected ? "white" : "#1c1d1f"
 
