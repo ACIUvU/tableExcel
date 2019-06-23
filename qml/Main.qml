@@ -30,10 +30,15 @@ App {
 
                     anchors.left: parent.left
                     anchors.bottom: parent.bottom
-                    anchors.margins: 5
-                    width: parent.width
-                    spacing: 10
+                    anchors.bottomMargin: parent.width*1/56
+                    anchors.rightMargin: parent.width*1/56
+                    width: parent.width*1/4
+                    //height: parent.height*1/9
+                    spacing: parent.width*1/56
                     MHoverButton {
+                        width: parent.width*3/13
+                        //height: width
+                        //anchors.bottom: parent.bottom
                         tipText: qsTr("加载")
                         anchors.verticalCenter: parent.verticalCenter
                         backImageSource:  "qrc:/Image/Project/import.png"
@@ -45,6 +50,7 @@ App {
                     }
 
                     MHoverButton {
+                        width: parent.width*3/13
                         anchors.verticalCenter: parent.verticalCenter
                         tipText: {
                             if (root.sourceFileName)
@@ -62,6 +68,7 @@ App {
 
                     MHoverButton {
                         tipText: qsTr("另存为")
+                        width: parent.width*3/13
                         anchors.verticalCenter: parent.verticalCenter
                         backImageSource: "qrc:/Image/Project/saveas.png"
                         frontImageSource: "qrc:/Image/Project/saveasBlue.png"
@@ -92,13 +99,15 @@ App {
                 Row {
                     anchors {
                         bottom: parent.bottom
-                        bottomMargin: 5
+                        bottomMargin: parent.width*1/56
                         right: parent.right
-                        rightMargin: 5
+                        rightMargin: parent.width*1/56
                     }
-                    spacing: 10
+                    width: parent.width*1/2
+                    spacing: parent.width*1/56
                     MHoverButton {
                         id: undoButton
+                        width: parent.width*3/34
                         tipText: qsTr("撤销")
                         anchors.verticalCenter: parent.verticalCenter
                         backImageSource: "qrc:/Image/Table/undo.png"
@@ -126,6 +135,7 @@ App {
                     }
                     MHoverButton {
                         id:redoButton
+                        width: parent.width*3/34
                         tipText: qsTr("恢复")
                         anchors.verticalCenter: parent.verticalCenter
                         backImageSource: "qrc:/Image/Table/redo.png"
@@ -154,6 +164,7 @@ App {
                     }                 
                     MHoverButton {
                         tipText: qsTr("下方添加一行")
+                        width: parent.width*3/34
                         anchors.verticalCenter: parent.verticalCenter
                         backImageSource: "qrc:/Image/Table/insert-below.png"
                         frontImageSource: "qrc:/Image/Table/insert-belowB.png"
@@ -164,6 +175,7 @@ App {
                     }
                     MHoverButton {
                         tipText: qsTr("末尾添加一行")
+                        width: parent.width*3/34
                         anchors.verticalCenter: parent.verticalCenter
                         backImageSource: "qrc:/Image/Table/append-row.png"
                         frontImageSource: "qrc:/Image/Table/append-rowB.png"
@@ -174,6 +186,7 @@ App {
                     }
                     MHoverButton {
                         tipText: qsTr("删除当前行")
+                        width: parent.width*3/34
                         anchors.verticalCenter: parent.verticalCenter
                         backImageSource: "qrc:/Image/Table/delete-row.png"
                         frontImageSource: "qrc:/Image/Table/delete-rowB.png"
@@ -184,6 +197,7 @@ App {
                     }
                     MHoverButton {
                         tipText: qsTr("清空")
+                        width: parent.width*3/34
                         anchors.verticalCenter: parent.verticalCenter
                         backImageSource: "qrc:/Image/Table/clear.png"
                         frontImageSource: "qrc:/Image/Table/clearB.png"
@@ -194,6 +208,7 @@ App {
 
                     MSpinButton {
                         tipText: qsTr("末尾添加多行")
+                        width: parent.width*9/34
                         anchors.verticalCenter: parent.verticalCenter
                         backImageSource: "qrc:/Image/Table/append-mulit-row.png"
                         frontImageSource: "qrc:/Image/Table/append-mulit-rowB.png"
@@ -204,88 +219,19 @@ App {
                 }
 
 
-                //文件读写
-                FileIO {
-                    id: fileIO
-                }
-                FileInfo {
-                    id: fileInfo
-                }
-
-                //左上角
-                TabBar {
-                    id: columnTabBar
-                    anchors.left: parent.left
-                    anchors.leftMargin: 10
-                    anchors.top: parent.top
-                    anchors.topMargin: 10
-                    width: 300
-                    height: 35
-                    currentIndex: 0
-                    TabButton {
-                        id: signalsButton
-                        text: qsTr("今日安排")
-                        contentItem: Text {
-                            anchors.centerIn: signalsButton
-                            text: signalsButton.text
-                            verticalAlignment: Text.AlignVCenter
-                            horizontalAlignment: Text.AlignHCenter
-                            color: signalsButton.checked ? "#30d6fd" : "#787878"    //"#d5d5d5"
-                        }
-                        background: Rectangle {
-                            implicitWidth: 120
-                            implicitHeight: 35
-                            color: "#f5f7fa"
-                        }
-                    }
-                    TabButton {
-                        id: specialSignalsButton
-                        //text: qsTr("表格二")
-                        text: qsTr("本周事程")
-                        contentItem: Text {
-                            anchors.centerIn: specialSignalsButton
-                            text: specialSignalsButton.text
-                            verticalAlignment: Text.AlignVCenter
-                            horizontalAlignment: Text.AlignHCenter
-                            color: specialSignalsButton.checked ? "#30d6fd" : "#787878"    //"#d5d5d5"
-                        }
-                        background: Rectangle {
-                            implicitWidth: 120
-                            implicitHeight: 35
-                            color: "#edf1f7"
-                        }
-                    }
-                    TabButton {
-                        id: commandsButton
-                        //text: qsTr("表格三")
-                        text: qsTr("当月目标")
-                        contentItem: Text {
-                            anchors.centerIn: commandsButton
-                            text: commandsButton.text
-                            verticalAlignment: Text.AlignVCenter
-                            horizontalAlignment: Text.AlignHCenter
-                            color: commandsButton.checked ? "#30d6fd" : "#787878"   //"#d5d5d5"
-                        }
-                        background: Rectangle {
-                            implicitWidth: 120
-                            implicitHeight: 35
-                            color: "#edf1f7"
-                        }
-                    }
-                }
-
                 //右上角
                 Row {
                     anchors {
                         right: parent.right
-                        rightMargin: 20
+                        rightMargin: parent.width*1/56
                         top: parent.top
-                        topMargin: 5
+                        topMargin: parent.width*1/56
                     }
-                    spacing: 10
+                    width:parent.width*1/3
+                    spacing: parent.width*1/56
                     MTextButton {
                         id: findButton
-                        width: 200
+                        width: parent.width*3/4
                         hitText: qsTr("搜索...")
 
                         backImageSourceOne: "qrc:/Image/Tools/arrowUpGray.png"
@@ -301,6 +247,7 @@ App {
                     }
                     MHoverButton {
                         id: templateButton
+                        width:parent.width*1/4
                         tipText: qsTr("导入模板")
                         backImageSource: "qrc:/Image/Tools/importG.png"
                         frontImageSource: "qrc:/Image/Tools/importO.png"
@@ -311,6 +258,79 @@ App {
                     }
                 }
 
+                //左上角
+                TabBar {
+                    id: columnTabBar
+                    anchors.left: parent.left
+                    anchors.leftMargin: parent.width*1/56
+                    anchors.top: parent.top
+                    anchors.topMargin: parent.width*1/56
+
+                    width: parent.width*1/2
+ //                   height: 35
+                    currentIndex: 0
+                    TabButton {
+                        id: thisdayButton
+                        text: qsTr("今日安排")
+                        contentItem: Text {
+                            anchors.centerIn: thisdayButton
+                            text: thisdayButton.text
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: Text.AlignHCenter
+                            color: thisdayButton.checked ? "#030303" : "#787878"    //"#d5d5d5"
+                        }
+                        background: Rectangle {
+                            //implicitWidth: 120
+                            //implicitHeight: 35
+                            color: "#00BFFF"
+                        }
+                    }
+                    TabButton {
+                        id: thisweekButton
+                        //text: qsTr("表格二")
+                        text: qsTr("本周事程")
+                        contentItem: Text {
+                            anchors.centerIn: thisweekButton
+                            text: thisweekButton.text
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: Text.AlignHCenter
+                            color: thisweekButton.checked ? "#030303" : "#787878"    //"#d5d5d5"
+                        }
+                        background: Rectangle {
+                            //implicitWidth: 120
+                            //implicitHeight: 35
+                            color: "#FFD700"
+                        }
+                    }
+                    TabButton {
+                        id: thismonthButton
+                        //text: qsTr("表格三")
+                        text: qsTr("当月目标")
+                        contentItem: Text {
+                            anchors.centerIn: thismonthButton
+                            text: thismonthButton.text
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: Text.AlignHCenter
+                            color: thismonthButton.checked ? "#030303" : "#787878"   //"#d5d5d5"
+                        }
+                        background: Rectangle {
+                            //implicitWidth: 120
+                            //implicitHeight: 35
+                            color: "#EE82EE"
+                        }
+                    }
+                }
+
+
+                //文件读写
+                FileIO {
+                    id: fileIO
+                }
+                FileInfo {
+                    id: fileInfo
+                }
+
+
                 //核心表格
                 Item {
                     id: tabRect
@@ -319,7 +339,7 @@ App {
                         top: columnTabBar.bottom
                         right: parent.right
                         bottom: parent.bottom
-                        bottomMargin: 50
+                        bottomMargin: parent.width*5/56
                     }
                     signal addRowsAbove(int count);
                     signal addRowsBelow(int count);
