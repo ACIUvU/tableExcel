@@ -41,7 +41,7 @@ APP描述：事程规划应用
 
 
 /*项目期间经验：
- *1.MSVC2015不支持WebEngine， 构建时要选MSVC2017，并且要在pro文件中加入QT += webengine
+ * 1.MSVC2015不支持WebEngine， 构建时要选MSVC2017，并且要在pro文件中加入QT += webengine
  * 2.运行时上一个程序未关闭会有写入问题   Qt的Bug
  * 3.两个项目使用同一个构建套件 其中一个会出现Cannot retrieve debugging output
  * 4.资源文件过大是要在pro文件加入CONFIG += resources_big
